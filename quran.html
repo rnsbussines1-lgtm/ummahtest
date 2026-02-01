@@ -7,17 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Amiri:wght@700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #3d3129;
-            --accent-gold: #c2a378;
-            --gold-light: #e6d5bc;
-            --gold-gradient: linear-gradient(135deg, #c2a378 0%, #a68b64 100%);
+            --bg-dark: #2c1e17;
+            --accent-gold: #b08d57;
+            --accent-light: #d4af37;
+            --bg-page: #f4eee0; 
             --white: #ffffff;
-            --bg-page: #fdfaf5;
-            --card-bg: #ffffff;
-            --text-main: #4a3f35;
-            --text-muted: #8c8279;
-            --transition-smooth: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-reveal: 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            --shadow: 0 10px 30px rgba(44, 30, 23, 0.08);
+            --transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         * { box-sizing: border-box; }
@@ -71,7 +67,7 @@
             text-align: center;
         }
 
-        .quran-header { text-align: center; margin-bottom: 50px; }
+        .quran-header { text-align: center; margin-bottom: 50px; position: relative; }
         .arabic-title { 
             font-family: 'Amiri', serif; 
             font-size: clamp(3rem, 8vw, 4.5rem); 
@@ -129,6 +125,33 @@
 
         #reading-view { display: none; }
         
+        /* Главная кнопка плеера */
+        .main-audio-ctrl {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .play-btn-large {
+            background: var(--accent-gold);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-family: 'Montserrat';
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(176,141,87,0.2);
+        }
+        .play-btn-large:hover { background: var(--bg-dark); transform: scale(1.05); }
+        .play-btn-large svg { width: 20px; height: 20px; fill: currentColor; }
+
         .bismillah {
             font-family: 'Amiri', serif;
             font-size: clamp(2.5rem, 6vw, 3.5rem);
@@ -147,13 +170,6 @@
             position: relative;
         }
 
-        .ayah-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
         .ayah-num { 
             color: var(--accent-gold); 
             font-weight: 700; 
@@ -161,32 +177,8 @@
             background: #fdf8f0;
             border-radius: 8px;
             font-size: 0.9rem;
-        }
-
-        .play-btn {
-            background: var(--accent-gold);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(176,141,87,0.3);
-        }
-
-        .play-btn:hover {
-            background: var(--bg-dark);
-            transform: scale(1.1);
-        }
-
-        .play-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
+            margin-bottom: 20px;
+            display: inline-block;
         }
 
         .ayah-text-ar { 
@@ -236,6 +228,13 @@
             <span id="current-ar" class="arabic-title"></span>
             <h1 id="current-ru"></h1>
             <p id="current-info"></p>
+            
+            <div class="main-audio-ctrl">
+                <button id="mainPlayBtn" class="play-btn-large">
+                    <span id="playIcon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                    <span id="playText">Слушать суру</span>
+                </button>
+            </div>
         </div>
         <div id="ayahs-container"></div>
     </div>
@@ -250,7 +249,8 @@
 
     let qData = [];
     let isReading = false;
-    let currentAudio = null;
+    let audioPlayer = new Audio();
+    let currentSurahIdx = null;
 
     async function loadQuran() {
         try {
@@ -289,61 +289,66 @@
         });
     });
 
-    // Функция для получения пути к аудио файлу
-    // Формат: full quran/001001.mp3 (3 знака на суру, 3 на аят)
-    function getAudioPath(surahNum, ayahNum) {
+    // Функция для получения пути к аудио файлу суры
+    // Формат: 001.mp3, 002.mp3 и т.д.
+    function getAudioPath(surahNum) {
         const s = String(surahNum).padStart(3, '0');
-        const a = String(ayahNum).padStart(3, '0');
-        return `full quran/${s}${a}.mp3`;
+        return `${s}.mp3`;
     }
 
-    function toggleAudio(btn, surahIdx, ayahIdx) {
-        const path = getAudioPath(surahIdx + 1, ayahIdx + 1);
-        
-        if (currentAudio && currentAudio.src.includes(path)) {
-            if (currentAudio.paused) {
-                currentAudio.play();
-                btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-            } else {
-                currentAudio.pause();
-                btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+    const mainPlayBtn = document.getElementById('mainPlayBtn');
+    const playIcon = document.getElementById('playIcon');
+    const playText = document.getElementById('playText');
+
+    mainPlayBtn.onclick = () => {
+        if (audioPlayer.paused) {
+            if (!audioPlayer.src || !audioPlayer.src.includes(getAudioPath(currentSurahIdx + 1))) {
+                audioPlayer.src = getAudioPath(currentSurahIdx + 1);
             }
-            return;
-        }
-
-        if (currentAudio) {
-            currentAudio.pause();
-            // Сбрасываем иконки у всех кнопок
-            document.querySelectorAll('.play-btn').forEach(b => {
-                b.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+            audioPlayer.play().catch(e => {
+                console.error("Audio file not found:", audioPlayer.src);
+                alert("Аудиофайл не найден. Убедитесь, что файлы 001.mp3, 002.mp3 и т.д. лежат в той же папке, что и этот HTML файл.");
             });
+        } else {
+            audioPlayer.pause();
         }
+    };
 
-        currentAudio = new Audio(path);
-        btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-        
-        currentAudio.play().catch(e => {
-            console.error("Audio file not found:", path);
-            btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
-        });
+    audioPlayer.onplay = () => {
+        playIcon.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+        playText.innerText = "Пауза";
+    };
 
-        currentAudio.onended = () => {
-            btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
-        };
-    }
+    audioPlayer.onpause = () => {
+        playIcon.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+        playText.innerText = "Продолжить";
+    };
+
+    audioPlayer.onended = () => {
+        playIcon.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+        playText.innerText = "Слушать суру";
+    };
 
     function openSurah(index) {
+        currentSurahIdx = index;
         isReading = true;
         document.getElementById('list-view').style.display = 'none';
         document.getElementById('reading-view').style.display = 'block';
+        
+        // Сброс плеера под новую суру
+        audioPlayer.pause();
+        audioPlayer.src = getAudioPath(index + 1);
+        playIcon.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+        playText.innerText = "Слушать суру";
+
         const surah = qData[index];
         const parts = namesRu[index].split(' — ');
         document.getElementById('current-ar').innerText = surah.name;
         document.getElementById('current-ru').innerText = parts[0];
         document.getElementById('current-info').innerText = `${parts[1]} — ${surah.aya ? surah.aya.length : surah.verses.length} аятов`;
+        
         const container = document.getElementById('ayahs-container');
         container.innerHTML = '';
-        
         if (index !== 8 && index !== 0) container.innerHTML += `<div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`;
         
         const ayahs = surah.aya || surah.verses;
@@ -351,12 +356,7 @@
             const ayahBox = document.createElement('div');
             ayahBox.className = 'ayah-box';
             ayahBox.innerHTML = `
-                <div class="ayah-header">
-                    <span class="ayah-num">Аят ${i + 1}</span>
-                    <button class="play-btn" onclick="toggleAudio(this, ${index}, ${i})">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                </div>
+                <span class="ayah-num">Аят ${i + 1}</span>
                 <span class="ayah-text-ar">${ayah.text}</span>
                 <p class="ayah-text-ru">${ayah.translation || ayah.text_russian}</p>
             `;
@@ -366,17 +366,13 @@
     }
 
     function handleBack() {
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio = null;
-        }
+        audioPlayer.pause();
         if (isReading) {
             isReading = false;
             document.getElementById('list-view').style.display = 'block';
             document.getElementById('reading-view').style.display = 'none';
             window.scrollTo(0,0);
         } else {
-            // Если вы используете это внутри приложения, замените на нужный URL
             window.location.href = 'index.html';
         }
     }
