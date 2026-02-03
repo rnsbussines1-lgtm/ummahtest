@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ummah Online | Главная</title>
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -20,6 +19,7 @@
             --text-muted: #8c8279;
             --transition-smooth: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             --transition-reveal: 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            --shadow-soft: 0 10px 30px rgba(61, 49, 41, 0.06);
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
@@ -32,6 +32,13 @@
             overflow-x: hidden;
         }
 
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent-gold);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
         /* --- TOP BAR --- */
         .top-bar {
             background: var(--bg-dark);
@@ -42,6 +49,8 @@
             align-items: center;
             font-size: 12px;
             font-weight: 500;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         /* --- INTEGRATED HEADER --- */
@@ -178,6 +187,42 @@
             margin-right: auto;
         }
 
+        .hero-cta {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 13px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            box-shadow: 0 12px 30px rgba(194, 163, 120, 0.35);
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); background: #b9966a; }
+        .btn-ghost {
+            background: rgba(255,255,255,0.15);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,0.28); }
+
         /* --- PRAYER BAR --- */
         .prayer-bar {
             background: var(--white);
@@ -192,6 +237,8 @@
             box-shadow: 0 15px 40px rgba(61, 49, 41, 0.08);
             text-align: center;
             border: 1px solid rgba(194, 163, 120, 0.1);
+            flex-wrap: wrap;
+            gap: 10px 0;
         }
 
         .prayer-time { flex: 1; min-width: 110px; border-right: 1px solid #f7f2eb; padding: 5px; }
@@ -201,19 +248,59 @@
         .prayer-time.active { background: #fffbf5; border-radius: 10px; }
         .prayer-time.active .time { color: var(--accent-gold); }
 
+        .next-prayer {
+            flex: 1.2;
+            min-width: 180px;
+            border-left: 1px solid #f7f2eb;
+            padding: 5px 10px;
+        }
+
+        .next-prayer .label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; }
+        .next-prayer .value { font-size: 1.2rem; font-weight: 700; color: var(--bg-dark); margin-top: 6px; }
+        .next-prayer .countdown { font-size: 0.95rem; color: var(--accent-gold); font-weight: 600; margin-top: 4px; }
+
+        .status-bar {
+            max-width: 1000px;
+            margin: 12px auto 0;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: #fff8ee;
+            border: 1px solid rgba(194, 163, 120, 0.2);
+            color: var(--text-main);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .status-bar span { opacity: 0.9; }
+
+        .error-banner {
+            max-width: 1000px;
+            margin: 14px auto 0;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: #fff1f1;
+            border: 1px solid #f1b8b8;
+            color: #7a3d3d;
+            font-size: 12px;
+            display: none;
+        }
+
         /* --- CONTENT CONTAINER --- */
         .container { max-width: 1100px; margin: 80px auto; padding: 0 20px; }
 
         .reveal {
             opacity: 0;
             transform: translateY(30px) scale(0.98);
-            transition: 
-                opacity var(--transition-reveal), 
+            transition:
+                opacity var(--transition-reveal),
                 transform var(--transition-reveal);
             transition-delay: var(--delay, 0s);
             will-change: transform, opacity;
         }
-        
+
         .reveal.visible {
             opacity: 1;
             transform: translateY(0) scale(1);
@@ -224,7 +311,7 @@
             border-radius: 30px;
             padding: 70px 40px;
             text-align: center;
-            margin-bottom: 100px;
+            margin-bottom: 60px;
             position: relative;
             box-shadow: 0 10px 30px rgba(61, 49, 41, 0.03);
             border: 1px solid #f7f2eb;
@@ -249,6 +336,62 @@
 
         .ayah-ref { font-size: 13px; color: var(--accent-gold); font-weight: 600; }
         .ayah-label { margin-top: 35px; font-size: 11px; color: var(--accent-gold); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; opacity: 0.6; }
+
+        .ayah-card.loading .ayah-ar,
+        .ayah-card.loading .ayah-ru,
+        .ayah-card.loading .ayah-ref {
+            color: transparent;
+            background: linear-gradient(90deg, #f4ede3, #faf6f0, #f4ede3);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s infinite;
+            border-radius: 8px;
+        }
+
+        .ayah-card.loading .ayah-ar { min-height: 36px; }
+        .ayah-card.loading .ayah-ru { min-height: 54px; }
+        .ayah-card.loading .ayah-ref { min-height: 18px; width: 160px; margin: 0 auto; }
+
+        .prayer-bar.loading .prayer-time .time,
+        .prayer-bar.loading .next-prayer .value,
+        .prayer-bar.loading .next-prayer .countdown {
+            color: transparent;
+            background: linear-gradient(90deg, #f4ede3, #faf6f0, #f4ede3);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s infinite;
+            border-radius: 8px;
+        }
+
+        /* --- FEATURED COURSE --- */
+        .course-teaser {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            align-items: center;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid #f7f2eb;
+            margin-bottom: 100px;
+        }
+
+        .course-teaser h3 { margin: 0 0 12px; font-size: 1.6rem; }
+        .course-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1.2px; }
+        .course-bullets { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+        .course-bullets li { background: #fdf6eb; padding: 8px 14px; border-radius: 20px; font-size: 12px; border: 1px solid rgba(194, 163, 120, 0.2); }
+        .course-visual {
+            background: linear-gradient(135deg, #f7efe5, #f2e3d2);
+            border-radius: 24px;
+            padding: 30px;
+            min-height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            color: var(--bg-dark);
+            border: 1px solid rgba(194, 163, 120, 0.2);
+        }
 
         /* --- CARDS GRID --- */
         .features-grid {
@@ -309,7 +452,7 @@
             padding: 40px;
             border-radius: 24px;
             text-align: center;
-            max-width: 400px;
+            max-width: 420px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             border: 1px solid var(--accent-gold);
             animation: zoomIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
@@ -339,13 +482,24 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        @media (max-width: 900px) {
+            .course-teaser { grid-template-columns: 1fr; }
+        }
 
         @media (max-width: 768px) {
             .nav-links { gap: 15px; }
             .nav-link { font-size: 11px; }
-            .prayer-bar { margin: -40px 10px 0; padding: 15px 5px; flex-wrap: wrap; }
+            .prayer-bar { margin: -40px 10px 0; padding: 15px 5px; }
             .prayer-time { min-width: 33.33%; border: none; margin-bottom: 10px; }
+            .next-prayer { border-left: none; width: 100%; }
             .logo-link span { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+            .hero { background-attachment: scroll; }
         }
     </style>
 </head>
@@ -354,6 +508,7 @@
     <div class="top-bar">
         <div class="hijri-date" id="hijri-date">...</div>
         <div class="location" id="location-text">Определение...</div>
+        <div class="tz-info" id="tz-info">Часовой пояс: ...</div>
     </div>
 
     <header class="main-header">
@@ -377,25 +532,56 @@
             </div>
             <h1>Путь к знаниям и вере</h1>
             <p>Ваш надежный проводник в мире исламского образования и духовной практики.</p>
+            <div class="hero-cta">
+                <a class="btn btn-primary" href="quran.html">Открыть Коран</a>
+                <a class="btn btn-ghost" href="azan.html">Смотреть намаз</a>
+            </div>
         </div>
     </section>
 
-    <div class="prayer-bar" id="prayer-bar">
+    <div class="prayer-bar loading" id="prayer-bar">
         <div class="prayer-time" id="fajr"><span class="name">Фаджр</span><span class="time">--:--</span></div>
         <div class="prayer-time" id="sunrise"><span class="name">Восход</span><span class="time">--:--</span></div>
         <div class="prayer-time" id="dhuhr"><span class="name">Зухр</span><span class="time">--:--</span></div>
         <div class="prayer-time" id="asr"><span class="name">Аср</span><span class="time">--:--</span></div>
         <div class="prayer-time" id="maghrib"><span class="name">Магриб</span><span class="time">--:--</span></div>
         <div class="prayer-time" id="isha"><span class="name">Иша</span><span class="time">--:--</span></div>
+        <div class="next-prayer" id="next-prayer">
+            <span class="label">Следующая молитва</span>
+            <div class="value" id="next-prayer-name">...</div>
+            <div class="countdown" id="next-prayer-countdown">...</div>
+        </div>
     </div>
 
+    <div class="status-bar" id="status-bar">
+        <span id="method-info">Метод: ...</span>
+        <span id="cache-info">Данные: ...</span>
+    </div>
+    <div class="error-banner" id="error-banner">Не удалось загрузить данные. Повторите попытку позже.</div>
+
     <main class="container">
-        <div class="ayah-card reveal" id="daily-ayah">
-            <div id="ayah-ar" class="ayah-ar">فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ</div>
-            <div id="ayah-ru" class="ayah-ru">«Поминайте Меня, и Я буду помнить о вас. Благодарите Меня и не будьте неблагодарны Мне».</div>
-            <div id="ayah-ref" class="ayah-ref">Аль-Бакара, 2:152</div>
+        <div class="ayah-card reveal loading" id="daily-ayah">
+            <div id="ayah-ar" class="ayah-ar">...</div>
+            <div id="ayah-ru" class="ayah-ru">...</div>
+            <div id="ayah-ref" class="ayah-ref">...</div>
             <p class="ayah-label">Аят дня</p>
         </div>
+
+        <section class="course-teaser reveal" style="--delay: 0.1s">
+            <div>
+                <div class="course-meta">Новый курс</div>
+                <h3>Основы Ислама за 4 недели</h3>
+                <p>Короткие уроки, живые сессии и практические задания — чтобы уверенно изучать акыду, фикх и исламскую этику.</p>
+                <ul class="course-bullets">
+                    <li>8 видеоуроков</li>
+                    <li>Материалы в PDF</li>
+                    <li>Проверка знаний</li>
+                </ul>
+            </div>
+            <div class="course-visual">
+                Старт набора: скоро
+            </div>
+        </section>
 
         <div class="features-grid">
             <a href="quran.html" class="card reveal" style="--delay: 0.1s">
@@ -422,12 +608,11 @@
         </div>
     </main>
 
-    <!-- MODAL -->
-    <div id="academyModal" class="modal">
+    <div id="academyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="academyTitle" aria-hidden="true">
         <div class="modal-content">
-            <h2>Академия</h2>
+            <h2 id="academyTitle">Академия</h2>
             <p>Скоро, ин шаа Аллах</p>
-            <button class="close-btn" onclick="closeAcademyModal()">Закрыть</button>
+            <button class="close-btn" id="academyClose" onclick="closeAcademyModal()">Закрыть</button>
         </div>
     </div>
 
@@ -439,7 +624,7 @@
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                     umar@ummahonline.org
                 </a>
-                <a href="https://t.me/ummahonline" target="_blank" class="contact-link">
+                <a href="https://t.me/ummahonline" target="_blank" rel="noopener" class="contact-link">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .33z"/></svg>
                     t.me/ummahonline
                 </a>
@@ -449,8 +634,24 @@
     </footer>
 
     <script>
-        function openAcademyModal() { document.getElementById('academyModal').style.display = 'flex'; }
-        function closeAcademyModal() { document.getElementById('academyModal').style.display = 'none'; }
+        const CACHE_TTL_MINUTES = 60 * 24; // 1 day
+        const PRAYER_METHOD = 3;
+
+        function openAcademyModal() {
+            const modal = document.getElementById('academyModal');
+            modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+            document.getElementById('academyClose').focus();
+        }
+        function closeAcademyModal() {
+            const modal = document.getElementById('academyModal');
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAcademyModal();
+        });
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -459,46 +660,188 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { 
+        }, {
             threshold: 0.15,
             rootMargin: '0px 0px -50px 0px'
         });
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        function setError(message) {
+            const banner = document.getElementById('error-banner');
+            banner.textContent = message;
+            banner.style.display = 'block';
+        }
+
+        function clearError() {
+            document.getElementById('error-banner').style.display = 'none';
+        }
+
+        function setCacheInfo(text) {
+            document.getElementById('cache-info').innerText = text;
+        }
+
+        function setMethodInfo(text) {
+            document.getElementById('method-info').innerText = text;
+        }
+
+        function setTimezone(text) {
+            document.getElementById('tz-info').innerText = text;
+        }
+
+        function saveCache(key, payload) {
+            localStorage.setItem(key, JSON.stringify({
+                savedAt: Date.now(),
+                payload
+            }));
+        }
+
+        function readCache(key) {
+            const raw = localStorage.getItem(key);
+            if (!raw) return null;
+            try {
+                const data = JSON.parse(raw);
+                const ageMinutes = (Date.now() - data.savedAt) / 60000;
+                if (ageMinutes > CACHE_TTL_MINUTES) return null;
+                return data.payload;
+            } catch (e) {
+                return null;
+            }
+        }
+
         async function fetchDailyAyah() {
+            const ayahCard = document.getElementById('daily-ayah');
+            ayahCard.classList.add('loading');
+            const todayKey = new Date().toISOString().slice(0, 10);
+            const cacheKey = `ayah:${todayKey}`;
+            const cached = readCache(cacheKey);
+            if (cached) {
+                applyAyah(cached);
+                setCacheInfo('Данные: кэшировано');
+                return;
+            }
             try {
                 const randomAyah = Math.floor(Math.random() * 6236) + 1;
                 const response = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyah}/ru.kuliev`);
                 const data = await response.json();
-                if(data.code === 200) {
+                if (data.code === 200) {
                     const ayah = data.data;
                     const arResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyah}`);
                     const arData = await arResponse.json();
-                    document.getElementById('ayah-ar').innerText = arData.data.text;
-                    document.getElementById('ayah-ru').innerText = `«${ayah.text}»`;
-                    document.getElementById('ayah-ref').innerText = `${ayah.surah.englishName}, ${ayah.surah.number}:${ayah.numberInSurah}`;
+                    const payload = {
+                        ar: arData.data.text,
+                        ru: ayah.text,
+                        ref: `${ayah.surah.englishName}, ${ayah.surah.number}:${ayah.numberInSurah}`
+                    };
+                    saveCache(cacheKey, payload);
+                    applyAyah(payload);
+                    setCacheInfo('Данные: обновлено сегодня');
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error(e);
+                setError('Не удалось загрузить аят дня. Пожалуйста, попробуйте позже.');
+            }
+        }
+
+        function applyAyah(payload) {
+            document.getElementById('ayah-ar').innerText = payload.ar;
+            document.getElementById('ayah-ru').innerText = `«${payload.ru}»`;
+            document.getElementById('ayah-ref').innerText = payload.ref;
+            document.getElementById('daily-ayah').classList.remove('loading');
+        }
+
+        function updatePrayerUI(t, hijri, meta) {
+            document.querySelector('#fajr .time').innerText = t.Fajr;
+            document.querySelector('#sunrise .time').innerText = t.Sunrise;
+            document.querySelector('#dhuhr .time').innerText = t.Dhuhr;
+            document.querySelector('#asr .time').innerText = t.Asr;
+            document.querySelector('#maghrib .time').innerText = t.Maghrib;
+            document.querySelector('#isha .time').innerText = t.Isha;
+            document.getElementById('hijri-date').innerText = `${hijri.day} ${hijri.month.en} ${hijri.year} AH`;
+
+            if (meta && meta.timezone) {
+                setTimezone(`Часовой пояс: ${meta.timezone}`);
+            }
+            if (meta && meta.method) {
+                setMethodInfo(`Метод: ${meta.method.name} (${meta.method.id})`);
+            }
+
+            document.getElementById('prayer-bar').classList.remove('loading');
+            highlightCurrent(t);
+            scheduleNextPrayer(t);
+        }
+
+        function scheduleNextPrayer(t) {
+            const order = [
+                { id: 'fajr', name: 'Фаджр', time: t.Fajr },
+                { id: 'dhuhr', name: 'Зухр', time: t.Dhuhr },
+                { id: 'asr', name: 'Аср', time: t.Asr },
+                { id: 'maghrib', name: 'Магриб', time: t.Maghrib },
+                { id: 'isha', name: 'Иша', time: t.Isha }
+            ];
+
+            function getNext() {
+                const now = new Date();
+                const curMinutes = now.getHours() * 60 + now.getMinutes();
+                const parse = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
+                for (let i = 0; i < order.length; i++) {
+                    const minutes = parse(order[i].time);
+                    if (curMinutes < minutes) {
+                        return { ...order[i], minutes, tomorrow: false };
+                    }
+                }
+                const fajrMinutes = parse(order[0].time) + 24 * 60;
+                return { ...order[0], minutes: fajrMinutes, tomorrow: true };
+            }
+
+            function tick() {
+                const now = new Date();
+                const curMinutes = now.getHours() * 60 + now.getMinutes();
+                const curSeconds = now.getSeconds();
+                const next = getNext();
+                const totalMinutes = next.minutes - curMinutes - (curSeconds > 0 ? 1 : 0);
+                const hours = Math.max(0, Math.floor(totalMinutes / 60));
+                const mins = Math.max(0, totalMinutes % 60);
+
+                document.getElementById('next-prayer-name').innerText = `${next.name}${next.tomorrow ? ' (завтра)' : ''}`;
+                document.getElementById('next-prayer-countdown').innerText = `Через ${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+            }
+
+            tick();
+            setInterval(tick, 1000 * 30);
         }
 
         async function fetchPrayerTimes(lat, lon) {
+            document.getElementById('prayer-bar').classList.add('loading');
+            clearError();
+            const todayKey = new Date().toISOString().slice(0, 10);
+            const coordKey = `${lat.toFixed(2)},${lon.toFixed(2)}`;
+            const cacheKey = `prayer:${todayKey}:${coordKey}`;
+            const cached = readCache(cacheKey);
+            if (cached) {
+                updatePrayerUI(cached.timings, cached.hijri, cached.meta);
+                setCacheInfo('Данные: кэшировано');
+                return;
+            }
             try {
-                const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
+                const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=${PRAYER_METHOD}`);
                 const data = await response.json();
                 if (data.code === 200) {
-                    const t = data.data.timings;
-                    const h = data.data.date.hijri;
-                    document.querySelector('#fajr .time').innerText = t.Fajr;
-                    document.querySelector('#sunrise .time').innerText = t.Sunrise;
-                    document.querySelector('#dhuhr .time').innerText = t.Dhuhr;
-                    document.querySelector('#asr .time').innerText = t.Asr;
-                    document.querySelector('#maghrib .time').innerText = t.Maghrib;
-                    document.querySelector('#isha .time').innerText = t.Isha;
-                    document.getElementById('hijri-date').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
-                    highlightCurrent(t);
+                    const payload = {
+                        timings: data.data.timings,
+                        hijri: data.data.date.hijri,
+                        meta: data.data.meta
+                    };
+                    saveCache(cacheKey, payload);
+                    updatePrayerUI(payload.timings, payload.hijri, payload.meta);
+                    setCacheInfo('Данные: обновлено сегодня');
+                } else {
+                    setError('Не удалось получить время намаза.');
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error(e);
+                setError('Не удалось загрузить время намаза. Проверьте подключение.');
+            }
         }
 
         function highlightCurrent(t) {
@@ -509,20 +852,28 @@
             const times = [parse(t.Fajr), parse(t.Dhuhr), parse(t.Asr), parse(t.Maghrib), parse(t.Isha)];
             document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
             let idx = 0;
-            for(let i=times.length-1; i>=0; i--) { if(cur >= times[i]) { idx = i; break; } }
-            if(document.getElementById(pIds[idx])) document.getElementById(pIds[idx]).classList.add('active');
+            for (let i = times.length - 1; i >= 0; i--) { if (cur >= times[i]) { idx = i; break; } }
+            if (document.getElementById(pIds[idx])) document.getElementById(pIds[idx]).classList.add('active');
         }
 
         async function getCity(lat, lon) {
             try {
                 const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
                 const data = await res.json();
-                const city = data.address.city || data.address.town || data.address.village || data.address.suburb || "Место определено";
+                const city = data.address.city || data.address.town || data.address.village || data.address.suburb || 'Место определено';
                 document.getElementById('location-text').innerText = city;
-            } catch(e) { document.getElementById('location-text').innerText = "Город не найден"; }
+            } catch (e) {
+                document.getElementById('location-text').innerText = 'Город не найден';
+            }
+        }
+
+        function setDefaultTimezone() {
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            setTimezone(`Часовой пояс: ${tz}`);
         }
 
         window.onload = () => {
+            setDefaultTimezone();
             fetchDailyAyah();
             fetchPrayerTimes(55.75, 37.61);
             if (navigator.geolocation) {
@@ -533,9 +884,8 @@
                         fetchPrayerTimes(lat, lon);
                         getCity(lat, lon);
                     },
-                    (error) => {
-                        console.warn("Геопозиция недоступна. Используются данные Москвы.");
-                        document.getElementById('location-text').innerText = "Москва";
+                    () => {
+                        document.getElementById('location-text').innerText = 'Москва';
                     },
                     { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
                 );
@@ -544,3 +894,4 @@
     </script>
 </body>
 </html>
+
