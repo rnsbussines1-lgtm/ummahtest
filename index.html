@@ -642,44 +642,51 @@ const obs = new IntersectionObserver(entries=>{
 },{ threshold:.1, rootMargin:'0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// ── PRAYER TIMES ──
-async function fetchPrayer(lat, lon) {
+// ── PRAYER TIMES + CITY from aladhan ──
+async function fetchPrayerAndCity(lat, lon) {
     try {
-        const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
+        // aladhan returns timings + hijri date + timezone info
+        const res = await fetch(
+            `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`
+        );
         const data = await res.json();
-        if(data.code !== 200) return;
-        const t = data.data.timings, h = data.data.date.hijri;
-        document.querySelector('#fajr .p-time').textContent = t.Fajr;
+        if (data.code !== 200) return;
+
+        const t = data.data.timings;
+        const h = data.data.date.hijri;
+        const meta = data.data.meta; // contains timezone e.g. "Europe/Istanbul"
+
+        // Fill prayer times
+        document.querySelector('#fajr .p-time').textContent    = t.Fajr;
         document.querySelector('#sunrise .p-time').textContent = t.Sunrise;
-        document.querySelector('#dhuhr .p-time').textContent = t.Dhuhr;
-        document.querySelector('#asr .p-time').textContent = t.Asr;
+        document.querySelector('#dhuhr .p-time').textContent   = t.Dhuhr;
+        document.querySelector('#asr .p-time').textContent     = t.Asr;
         document.querySelector('#maghrib .p-time').textContent = t.Maghrib;
-        document.querySelector('#isha .p-time').textContent = t.Isha;
-        document.getElementById('hijri-date').textContent = `${h.day} ${h.month.en} ${h.year} AH`;
-        const parse = s => { const [hh,mm]=s.split(':').map(Number); return hh*60+mm; };
-        const now = new Date(), curMin = now.getHours()*60+now.getMinutes();
+        document.querySelector('#isha .p-time').textContent    = t.Isha;
+
+        // Hijri date
+        document.getElementById('hijri-date').textContent =
+            `${h.day} ${h.month.en} ${h.year} AH`;
+
+        // City name: extract from timezone "Continent/CityName" → "CityName"
+        // e.g. "Europe/Istanbul" → "Istanbul", "Asia/Dubai" → "Dubai"
+        if (meta && meta.timezone) {
+            const parts = meta.timezone.split('/');
+            const cityRaw = parts[parts.length - 1].replace(/_/g, ' ');
+            document.getElementById('location-text').textContent = cityRaw;
+        }
+
+        // Highlight current prayer
+        const parse = s => { const [hh,mm] = s.split(':').map(Number); return hh*60+mm; };
+        const nowMin = new Date().getHours()*60 + new Date().getMinutes();
         const ids  = ['fajr','dhuhr','asr','maghrib','isha'];
         const mins = [parse(t.Fajr),parse(t.Dhuhr),parse(t.Asr),parse(t.Maghrib),parse(t.Isha)];
-        document.querySelectorAll('.prayer-cell').forEach(el=>el.classList.remove('active'));
-        let idx=0;
-        for(let i=mins.length-1;i>=0;i--){ if(curMin>=mins[i]){idx=i;break;} }
+        document.querySelectorAll('.prayer-cell').forEach(el => el.classList.remove('active'));
+        let idx = 0;
+        for (let i = mins.length-1; i >= 0; i--) { if (nowMin >= mins[i]) { idx = i; break; } }
         document.getElementById(ids[idx])?.classList.add('active');
-    } catch(e){ console.error('Prayer fetch error:', e); }
-}
 
-// ── REVERSE GEOCODE — get real city name ──
-async function getCity(lat, lon) {
-    try {
-        // Use nominatim with proper User-Agent via fetch
-        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=ru`;
-        const res = await fetch(url, { headers: { 'Accept-Language': 'ru' } });
-        const d = await res.json();
-        const city = d.address.city || d.address.town || d.address.village ||
-                     d.address.county || d.address.state || '';
-        if(city) document.getElementById('location-text').textContent = city;
-    } catch(e) {
-        console.warn('Geocode error:', e);
-    }
+    } catch(e) { console.error('aladhan error:', e); }
 }
 
 // ── DAILY AYAH ──
@@ -694,7 +701,8 @@ async function fetchAyah(){
         if(d1.code===200){
             document.getElementById('ayah-ar').textContent = d2.data.text;
             document.getElementById('ayah-ru').textContent = `«${d1.data.text}»`;
-            document.getElementById('ayah-ref').textContent = `${d1.data.surah.englishName}, ${d1.data.surah.number}:${d1.data.numberInSurah}`;
+            document.getElementById('ayah-ref').textContent =
+                `${d1.data.surah.englishName}, ${d1.data.surah.number}:${d1.data.numberInSurah}`;
         }
     }catch(e){ console.error('Ayah error:', e); }
 }
@@ -703,29 +711,22 @@ async function fetchAyah(){
 window.addEventListener('DOMContentLoaded', () => {
     fetchAyah();
 
-    // Always load Moscow as fallback immediately
-    fetchPrayer(55.75, 37.61);
+    // Default: Moscow
+    fetchPrayerAndCity(55.7558, 37.6173);
     document.getElementById('location-text').textContent = 'Москва';
 
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
         pos => {
-            // Success — update with real coords
-            const { latitude: lat, longitude: lon } = pos.coords;
-            fetchPrayer(lat, lon);
-            getCity(lat, lon);
+            // Got real location — aladhan gives us city from timezone
+            fetchPrayerAndCity(pos.coords.latitude, pos.coords.longitude);
         },
         err => {
-            // Error (denied or timeout) — keep Moscow
-            console.warn('Geolocation denied, using Moscow. Error:', err.message);
-            document.getElementById('location-text').textContent = 'Москва';
+            console.warn('Geo denied:', err.message);
+            // Moscow stays
         },
-        {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 60000   // reuse a cached position up to 1 min old
-        }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
     );
 });
 </script>
