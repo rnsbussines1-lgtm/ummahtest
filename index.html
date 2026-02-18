@@ -84,7 +84,7 @@
 
         /* ─── HERO ─── */
         .hero {
-            position: relative; min-height: 90vh;
+            position: relative; min-height: 58vh;
             display: flex; align-items: center; justify-content: center;
             text-align: center; overflow: hidden; background: var(--dark);
         }
@@ -99,15 +99,11 @@
                 radial-gradient(ellipse 80% 55% at 50% 110%, rgba(194,163,120,0.12), transparent),
                 linear-gradient(168deg, rgba(38,25,15,0.08) 0%, rgba(38,25,15,0.78) 100%);
         }
-        .hero-arc {
-            position: absolute; bottom: -1px; left: 0;
-            width: 100%; height: 110px; overflow: hidden;
-        }
-        .hero-arc svg { display: block; width: 100%; height: 100%; }
+
 
         .hero-content {
             position: relative; z-index: 2;
-            max-width: 820px; padding: 80px 24px 130px;
+            max-width: 820px; padding: 50px 24px 90px;
             animation: fadeUp 1.3s cubic-bezier(0.2,0.8,0.2,1) both;
         }
 
@@ -178,29 +174,39 @@
         .btn-ghost:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
 
         /* ─── PRAYER BAR ─── */
+        .prayer-section {
+            background: var(--dark);
+            padding: 0 0 48px;
+        }
+        .prayer-label {
+            text-align: center;
+            padding: 28px 0 20px;
+            font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+            text-transform: uppercase; color: rgba(194,163,120,0.45);
+        }
         .prayer-bar {
-            background: var(--white);
-            margin: -52px auto 0; position: relative; z-index: 10;
-            max-width: 1000px; border-radius: 20px;
+            background: rgba(255,255,255,0.04);
+            margin: 0 auto;
+            max-width: 900px; border-radius: 16px;
             display: grid; grid-template-columns: repeat(6,1fr);
-            box-shadow: 0 20px 60px rgba(38,25,15,0.1), 0 0 0 1px rgba(194,163,120,0.1);
+            border: 1px solid rgba(194,163,120,0.12);
             overflow: hidden;
         }
         .prayer-time {
-            padding: 22px 10px 20px; text-align: center;
-            border-right: 1px solid #f3ede4; transition: background var(--ease);
+            padding: 20px 10px 18px; text-align: center;
+            border-right: 1px solid rgba(194,163,120,0.1); transition: background var(--ease);
         }
         .prayer-time:last-child { border-right: none; }
         .prayer-time .name {
             display: block; font-size: 9.5px; font-weight: 700;
             letter-spacing: 1.8px; text-transform: uppercase;
-            color: var(--muted); margin-bottom: 9px;
+            color: rgba(194,163,120,0.4); margin-bottom: 9px;
         }
         .prayer-time .time {
             display: block; font-family: 'Cormorant Garamond', serif;
-            font-size: 1.55rem; font-weight: 600; color: var(--dark); letter-spacing: 0.5px;
+            font-size: 1.5rem; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: 0.5px;
         }
-        .prayer-time.active { background: #fffbf4; }
+        .prayer-time.active { background: rgba(194,163,120,0.08); }
         .prayer-time.active .time { color: var(--gold); }
         .prayer-time.active .name { color: var(--gold); }
 
@@ -366,7 +372,7 @@
             .nav-links { gap: 18px; }
             .nav-link { font-size: 10.5px; }
             .logo-link span { display: none; }
-            .prayer-bar { grid-template-columns: repeat(3,1fr); margin: -42px 12px 0; }
+            .prayer-bar { grid-template-columns: repeat(3,1fr); margin: 0 12px; }
             .prayer-time:nth-child(3) { border-right: none; }
             .prayer-time:nth-child(4),
             .prayer-time:nth-child(5),
@@ -415,21 +421,19 @@
             <a href="azan.html" class="btn btn-ghost">Время намаза</a>
         </div>
     </div>
-    <div class="hero-arc">
-        <svg viewBox="0 0 1440 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,110 L0,55 Q360,0 720,38 Q1080,76 1440,18 L1440,110 Z" fill="#fdfaf5"/>
-        </svg>
-    </div>
+
 </section>
 
-<!-- PRAYER BAR -->
-<div class="prayer-bar" id="prayer-bar">
-    <div class="prayer-time" id="fajr">   <span class="name">Фаджр</span>  <span class="time">--:--</span></div>
-    <div class="prayer-time" id="sunrise"><span class="name">Восход</span>  <span class="time">--:--</span></div>
-    <div class="prayer-time" id="dhuhr">  <span class="name">Зухр</span>   <span class="time">--:--</span></div>
-    <div class="prayer-time" id="asr">    <span class="name">Аср</span>    <span class="time">--:--</span></div>
-    <div class="prayer-time" id="maghrib"><span class="name">Магриб</span> <span class="time">--:--</span></div>
-    <div class="prayer-time" id="isha">   <span class="name">Иша</span>   <span class="time">--:--</span></div>
+<div class="prayer-section">
+    <div class="prayer-label">Времена намаза сегодня</div>
+    <div class="prayer-bar" id="prayer-bar">
+        <div class="prayer-time" id="fajr">   <span class="name">Фаджр</span>  <span class="time">--:--</span></div>
+        <div class="prayer-time" id="sunrise"><span class="name">Восход</span>  <span class="time">--:--</span></div>
+        <div class="prayer-time" id="dhuhr">  <span class="name">Зухр</span>   <span class="time">--:--</span></div>
+        <div class="prayer-time" id="asr">    <span class="name">Аср</span>    <span class="time">--:--</span></div>
+        <div class="prayer-time" id="maghrib"><span class="name">Магриб</span> <span class="time">--:--</span></div>
+        <div class="prayer-time" id="isha">   <span class="name">Иша</span>   <span class="time">--:--</span></div>
+    </div>
 </div>
 
 <!-- MAIN -->
@@ -489,9 +493,9 @@
 <footer>
     <span class="footer-brand">Ummah Online</span>
     <div class="footer-contacts">
-        <a href="mailto:umar@ummahonline.org" class="contact-link">
+        <a href="/cdn-cgi/l/email-protection#add8c0ccdfedd8c0c0ccc5c2c3c1c4c3c883c2dfca" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            umar@ummahonline.org
+            <span class="__cf_email__" data-cfemail="2d58404c5f6d5840404c4542434144434803425f4a">[email&#160;protected]</span>
         </a>
         <a href="https://t.me/ummahonline" target="_blank" rel="noopener" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .33z"/></svg>
@@ -501,7 +505,7 @@
     <p class="copyright">&copy; 2026 Ummah Online. Все права защищены.</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
@@ -566,12 +570,4 @@
         fetchPrayerTimes(55.75, 37.61);
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                p => { fetchPrayerTimes(p.coords.latitude, p.coords.longitude); getCity(p.coords.latitude, p.coords.longitude); },
-                () => { document.getElementById('location-text').innerText = 'Москва'; },
-                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-            );
-        }
-    };
-</script>
-</body>
-</html>
+                p => { fetchPrayerTimes(p.coords.latitude, p.coords.longitude); getCity(p.coords.latitude, p.coords
