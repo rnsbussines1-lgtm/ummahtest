@@ -526,25 +526,6 @@
         const nav = document.createElement('div');
         nav.className = 'surah-nav';
 
-        if (index > 0) {
-            const prev = qData[index - 1];
-            const prevParts = namesRu[index - 1].split(' — ');
-            const prevCount = (prev.aya || prev.verses || []).length;
-            const prevBtn = document.createElement('button');
-            prevBtn.className = 'surah-nav-btn prev';
-            prevBtn.onclick = () => openSurah(index - 1);
-            prevBtn.innerHTML = `
-                <span class="nav-arrow">→</span>
-                <div class="nav-texts">
-                    <span class="nav-label">Предыдущая сура</span>
-                    <span class="nav-ar">${prev.name}</span>
-                    <span class="nav-name">${prevParts[0]}</span>
-                    <span class="nav-count">${prevCount} аятов</span>
-                </div>
-            `;
-            nav.appendChild(prevBtn);
-        }
-
         if (index < qData.length - 1) {
             const next = qData[index + 1];
             const nextParts = namesRu[index + 1].split(' — ');
@@ -562,6 +543,25 @@
                 </div>
             `;
             nav.appendChild(nextBtn);
+        }
+
+        if (index > 0) {
+            const prev = qData[index - 1];
+            const prevParts = namesRu[index - 1].split(' — ');
+            const prevCount = (prev.aya || prev.verses || []).length;
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'surah-nav-btn prev';
+            prevBtn.onclick = () => openSurah(index - 1);
+            prevBtn.innerHTML = `
+                <span class="nav-arrow">→</span>
+                <div class="nav-texts">
+                    <span class="nav-label">Предыдущая сура</span>
+                    <span class="nav-ar">${prev.name}</span>
+                    <span class="nav-name">${prevParts[0]}</span>
+                    <span class="nav-count">${prevCount} аятов</span>
+                </div>
+            `;
+            nav.appendChild(prevBtn);
         }
 
         container.appendChild(nav);
