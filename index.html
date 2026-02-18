@@ -5,61 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ummah Online | Главная</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #2a2118;
-            --bg-mid: #3d3129;
-            --accent-gold: #c2a378;
-            --accent-bright: #d4b896;
-            --gold-light: #e6d5bc;
-            --gold-pale: #f7f0e6;
-            --white: #ffffff;
-            --bg-page: #fdfaf5;
-            --text-main: #2a2118;
-            --text-muted: #8c8279;
-            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --bg-dark:    #26190f;
+            --bg-mid:     #3a2a1e;
+            --gold:       #c2a378;
+            --gold-light: #d9be9e;
+            --gold-pale:  #f5ede0;
+            --gold-dim:   #e6d5bc;
+            --white:      #ffffff;
+            --page:       #fdfaf5;
+            --text:       #2e1f12;
+            --muted:      #9a8b80;
+            --ease:       0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { box-sizing: border-box; scroll-behavior: smooth; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            background: var(--bg-page);
-            color: var(--text-main);
-            line-height: 1.6;
+            background: var(--page);
+            color: var(--text);
+            line-height: 1.65;
             overflow-x: hidden;
         }
 
+        /* ─── TOP BAR ─── */
         .top-bar {
             background: var(--bg-dark);
-            color: rgba(230,213,188,0.7);
-            padding: 8px 30px;
+            color: rgba(214, 190, 158, 0.6);
+            padding: 9px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 11px;
             font-weight: 500;
             letter-spacing: 0.5px;
-            border-bottom: 1px solid rgba(194,163,120,0.12);
+            border-bottom: 1px solid rgba(194,163,120,0.08);
         }
 
-        header {
-            background: rgba(253,250,245,0.96);
-            backdrop-filter: blur(20px);
+        /* ─── HEADER ─── */
+        header.main-header {
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(194,163,120,0.15);
-            box-shadow: 0 2px 30px rgba(42,33,24,0.04);
+            background: rgba(253,250,245,0.96);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(194,163,120,0.13);
+            box-shadow: 0 1px 28px rgba(38,25,15,0.04);
+            animation: slideDown 0.7s var(--ease) both;
         }
 
-        .header-inner {
+        .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 30px;
-            height: 68px;
+            padding: 0 32px;
+            height: 66px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -68,289 +71,313 @@
         .logo-link {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px;
             text-decoration: none;
             color: var(--bg-dark);
             font-weight: 800;
-            font-size: 0.95rem;
-            letter-spacing: 2px;
+            font-size: 12.5px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
         }
 
-        .logo-img {
-            width: 40px; height: 40px;
+        .logo-img-sm {
+            width: 38px; height: 38px;
             border-radius: 10px;
-            border: 1.5px solid var(--accent-gold);
+            border: 1.5px solid var(--gold);
             object-fit: cover;
         }
 
-        .nav-links { display: flex; gap: 35px; align-items: center; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
 
         .nav-link {
             text-decoration: none;
-            color: var(--text-main);
-            font-size: 12px;
+            color: var(--text);
+            font-size: 11.5px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.6px;
+            padding-bottom: 2px;
             position: relative;
-            padding-bottom: 3px;
-            transition: color var(--transition);
+            transition: color var(--ease);
         }
         .nav-link::after {
             content: '';
             position: absolute;
             bottom: 0; left: 0;
             width: 0; height: 1.5px;
-            background: var(--accent-gold);
-            transition: width var(--transition);
+            background: var(--gold);
+            transition: width var(--ease);
         }
-        .nav-link:hover { color: var(--accent-gold); }
+        .nav-link:hover { color: var(--gold); }
         .nav-link:hover::after { width: 100%; }
 
         /* ─── HERO ─── */
         .hero {
             position: relative;
-            min-height: 92vh;
+            min-height: 88vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
             overflow: hidden;
             background: var(--bg-dark);
         }
 
-        .hero-bg {
+        .hero-photo {
             position: absolute;
             inset: 0;
             background: url('photo.png') center/cover no-repeat;
-            opacity: 0.28;
+            background-attachment: fixed;
+            opacity: 0.22;
         }
 
-        .hero-geo {
+        .hero-overlay {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 80% 60% at 50% 100%, rgba(194,163,120,0.1), transparent),
-                radial-gradient(ellipse 50% 50% at 80% 15%, rgba(194,163,120,0.07), transparent);
+                radial-gradient(ellipse 75% 60% at 50% 110%, rgba(194,163,120,0.14), transparent),
+                linear-gradient(170deg, rgba(38,25,15,0.1) 0%, rgba(38,25,15,0.72) 100%);
         }
 
+        /* decorative geometric arc */
         .hero-arc {
             position: absolute;
             bottom: -1px; left: 0;
-            width: 100%; height: 120px;
+            width: 100%; height: 110px;
             overflow: hidden;
         }
-        .hero-arc svg { width: 100%; height: 100%; display: block; }
+        .hero-arc svg { display: block; width: 100%; height: 100%; }
 
         .hero-content {
             position: relative;
             z-index: 2;
-            text-align: center;
-            max-width: 860px;
-            padding: 60px 30px 130px;
-            animation: heroReveal 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+            max-width: 780px;
+            padding: 80px 24px 130px;
+            animation: fadeUp 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
         }
 
-        .hero-badge {
+        .hero-logo-box {
+            width: 88px; height: 88px;
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(194,163,120,0.45);
+            border-radius: 22px;
+            padding: 7px;
+            margin: 0 auto 30px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        }
+        .hero-logo-box img {
+            width: 100%; height: 100%;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .hero-eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 7px 18px;
-            border: 1px solid rgba(194,163,120,0.35);
-            border-radius: 999px;
-            color: var(--accent-bright);
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 28px;
-            background: rgba(194,163,120,0.06);
+            color: rgba(194,163,120,0.65);
+            margin-bottom: 20px;
         }
-        .hero-badge::before {
+        .hero-eyebrow::before, .hero-eyebrow::after {
             content: '';
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent-gold);
-            animation: pulse 2s ease infinite;
-        }
-
-        .hero-arabic {
-            font-family: 'Amiri', serif;
-            font-size: clamp(1.6rem, 4vw, 2.4rem);
-            color: rgba(230,213,188,0.4);
-            display: block;
-            margin-bottom: 18px;
-            letter-spacing: 2px;
+            width: 28px; height: 1px;
+            background: rgba(194,163,120,0.3);
         }
 
         .hero h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(3.2rem, 9vw, 7rem);
+            font-size: clamp(3rem, 9vw, 6.8rem);
             font-weight: 700;
             color: var(--white);
-            margin: 0 0 8px;
             line-height: 1.0;
             letter-spacing: -1.5px;
+            margin-bottom: 14px;
         }
         .hero h1 em {
             font-style: italic;
-            color: var(--accent-gold);
+            color: var(--gold);
         }
 
-        .hero-sub {
-            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-            color: rgba(230,213,188,0.7);
-            max-width: 500px;
-            margin: 22px auto 40px;
-            line-height: 1.75;
+        .hero-arabic {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: rgba(194,163,120,0.38);
+            display: block;
+            margin-bottom: 22px;
+            letter-spacing: 1px;
         }
 
-        .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .hero p {
+            font-size: clamp(0.92rem, 1.8vw, 1.08rem);
+            color: rgba(230,213,188,0.68);
+            max-width: 460px;
+            margin: 0 auto 42px;
+            line-height: 1.78;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
         .btn {
-            padding: 14px 32px;
-            border-radius: 4px;
+            padding: 13px 30px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11.5px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-family: 'Montserrat', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: transform var(--ease), box-shadow var(--ease), background var(--ease);
         }
-        .btn-gold { background: var(--accent-gold); color: var(--bg-dark); }
-        .btn-gold:hover { background: var(--accent-bright); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(194,163,120,0.3); }
-        .btn-ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
-        .btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        .btn-dark { background: var(--bg-dark); color: var(--white); }
-        .btn-dark:hover { background: var(--bg-mid); transform: translateY(-2px); }
-        .btn-dim { background: rgba(255,255,255,0.07); color: var(--gold-light); border: 1px solid rgba(255,255,255,0.1); }
-        .btn-dim:hover { background: rgba(255,255,255,0.13); }
+        .btn-gold {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(194,163,120,0.32);
+        }
+        .btn-ghost {
+            background: rgba(255,255,255,0.08);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.28);
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.16);
+            transform: translateY(-2px);
+        }
 
         /* ─── PRAYER BAR ─── */
         .prayer-bar {
-            max-width: 1000px;
-            margin: -55px auto 0;
+            background: var(--white);
+            margin: -52px auto 0;
             position: relative;
             z-index: 10;
-            background: var(--white);
+            max-width: 1000px;
             border-radius: 20px;
-            padding: 24px 28px;
-            box-shadow: 0 25px 60px rgba(42,33,24,0.12), 0 0 0 1px rgba(194,163,120,0.1);
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(6, 1fr);
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(38,25,15,0.1), 0 0 0 1px rgba(194,163,120,0.1);
+            overflow: hidden;
         }
 
         .prayer-time {
+            padding: 22px 10px 20px;
             text-align: center;
-            padding: 16px 10px;
-            border-radius: 14px;
-            border: 1px solid rgba(194,163,120,0.1);
-            background: var(--bg-page);
-            transition: var(--transition);
+            border-right: 1px solid #f3ede4;
+            transition: background var(--ease);
         }
-        .prayer-time.active {
-            background: #fff7ea;
-            border-color: rgba(194,163,120,0.4);
-            box-shadow: 0 8px 20px rgba(194,163,120,0.12);
-        }
+        .prayer-time:last-child { border-right: none; }
+
         .prayer-time .name {
             display: block;
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.8px;
             text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 6px;
+            color: var(--muted);
+            margin-bottom: 9px;
         }
-        .prayer-time .time { font-size: 1.3rem; font-weight: 700; color: var(--bg-dark); }
-        .prayer-time.active .time { color: var(--accent-gold); }
-
-        .next-prayer {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #2a2118, #3d3129);
-            border-radius: 14px;
-            padding: 18px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        .next-prayer .label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: rgba(194,163,120,0.5);
-        }
-        .next-prayer .value {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--white);
-            margin-top: 4px;
-        }
-        .next-prayer .countdown {
+        .prayer-time .time {
+            display: block;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent-gold);
+            font-size: 1.55rem;
+            font-weight: 600;
+            color: var(--bg-dark);
+            letter-spacing: 0.5px;
+        }
+        .prayer-time.active {
+            background: #fffbf4;
+        }
+        .prayer-time.active .time { color: var(--gold); }
+        .prayer-time.active .name { color: var(--gold); }
+
+        /* ─── MAIN CONTENT ─── */
+        .container {
+            max-width: 1100px;
+            margin: 90px auto 100px;
+            padding: 0 24px;
         }
 
-        .error-banner {
-            max-width: 1000px; margin: 12px auto 0;
-            padding: 10px 20px; border-radius: 12px;
-            background: #fff1f1; border: 1px solid #f1b8b8;
-            color: #7a3d3d; font-size: 12px; display: none;
+        /* ─── REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 1.1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition-delay: var(--delay, 0s);
         }
+        .reveal.visible { opacity: 1; transform: none; }
 
-        /* ─── CONTAINER ─── */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
-
-        /* ─── AYAH ─── */
-        .ayah-section { padding: 100px 0 60px; }
-
+        /* ─── AYAH CARD ─── */
         .ayah-card {
             background: var(--bg-dark);
             border-radius: 24px;
-            padding: 70px 60px;
+            padding: 72px 56px;
             text-align: center;
+            margin-bottom: 70px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 60px rgba(38,25,15,0.12);
         }
+
+        /* decorative quote mark */
         .ayah-card::before {
             content: '"';
             position: absolute;
-            top: -40px; left: 20px;
+            top: -60px; left: 20px;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 22rem;
+            font-size: 24rem;
             color: rgba(194,163,120,0.04);
             line-height: 1;
             pointer-events: none;
+            user-select: none;
+        }
+
+        /* subtle gold line top */
+        .ayah-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
 
         .ayah-ar {
             font-family: 'Amiri', serif;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            color: var(--accent-bright);
+            font-size: clamp(1.8rem, 4vw, 2.7rem);
+            color: var(--gold-light);
             direction: rtl;
             line-height: 2.1;
             margin-bottom: 30px;
         }
+
         .ayah-ru {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: rgba(230,213,188,0.8);
             font-style: italic;
+            color: rgba(230,213,188,0.75);
             max-width: 680px;
-            margin: 0 auto 18px;
-            line-height: 1.8;
+            margin: 0 auto 20px;
+            line-height: 1.85;
         }
+
         .ayah-ref {
             font-size: 11px;
             font-weight: 700;
@@ -358,355 +385,184 @@
             text-transform: uppercase;
             color: rgba(194,163,120,0.45);
         }
+
         .ayah-label {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            margin-top: 30px;
+            margin-top: 32px;
             font-size: 9px;
             font-weight: 800;
-            letter-spacing: 3px;
+            letter-spacing: 3.5px;
             text-transform: uppercase;
-            color: rgba(194,163,120,0.35);
+            color: rgba(194,163,120,0.3);
         }
         .ayah-label::before, .ayah-label::after {
             content: '';
-            width: 35px; height: 1px;
-            background: rgba(194,163,120,0.2);
+            width: 32px; height: 1px;
+            background: rgba(194,163,120,0.18);
         }
 
-        .ayah-card.loading .ayah-ar,
-        .ayah-card.loading .ayah-ru,
-        .ayah-card.loading .ayah-ref {
-            color: transparent;
-            background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.09), rgba(255,255,255,0.04));
-            background-size: 200% 100%;
-            animation: shimmer 1.8s infinite;
-            border-radius: 8px;
-        }
-        .ayah-card.loading .ayah-ar { min-height: 45px; }
-        .ayah-card.loading .ayah-ru { min-height: 60px; }
-        .ayah-card.loading .ayah-ref { min-height: 16px; width: 140px; margin: 0 auto; }
-
-        /* ─── FEATURES ─── */
-        .features-section { padding: 100px 0; }
-
-        .features-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: end;
-            margin-bottom: 55px;
-        }
-
-        .section-eyebrow {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            margin-bottom: 12px;
-        }
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            color: var(--bg-dark);
-            line-height: 1.1;
-            margin: 0 0 0;
-        }
-        .section-sub {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.75;
-            max-width: 420px;
-            align-self: end;
-        }
-
+        /* ─── FEATURES GRID ─── */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
         }
 
-        .feature-card {
+        .card {
             background: var(--white);
-            border: 1px solid rgba(194,163,120,0.14);
+            padding: 44px 36px;
             border-radius: 20px;
-            padding: 38px 32px;
             text-decoration: none;
             color: inherit;
+            transition: transform var(--ease), box-shadow var(--ease), border-color var(--ease);
+            text-align: center;
+            border: 1px solid rgba(194,163,120,0.14);
             display: flex;
             flex-direction: column;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .feature-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 3px;
-            background: var(--accent-gold);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform var(--transition);
-        }
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(42,33,24,0.08);
-            border-color: rgba(194,163,120,0.3);
-        }
-        .feature-card:hover::after { transform: scaleX(1); }
-
-        .feature-icon {
-            width: 52px; height: 52px;
-            background: var(--gold-pale);
-            border-radius: 13px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 26px;
-            border: 1px solid rgba(194,163,120,0.12);
-            transition: var(--transition);
-        }
-        .feature-card:hover .feature-icon { background: var(--bg-dark); border-color: var(--bg-dark); }
-        .feature-icon svg { width: 24px; height: 24px; fill: var(--accent-gold); transition: fill var(--transition); }
-
-        .feature-num {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.8rem;
-            color: rgba(194,163,120,0.4);
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .feature-card h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0 0 10px;
-            color: var(--bg-dark);
-        }
-        .feature-card p {
-            font-size: 0.86rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin: 0 0 22px;
-            flex: 1;
-        }
-        .feature-arrow { font-size: 1.1rem; color: var(--accent-gold); transition: transform var(--transition); }
-        .feature-card:hover .feature-arrow { transform: translateX(5px); }
-
-        /* ─── COURSE ─── */
-        .course-section { padding: 0 0 100px; }
-
-        .course-banner {
-            background: linear-gradient(135deg, #2a2118 0%, #45311f 100%);
-            border-radius: 24px;
-            padding: 60px;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 50px;
             align-items: center;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(194,163,120,0.12);
         }
-        .course-banner::before {
-            content: 'بسم الله';
+        /* bottom gold line reveal on hover */
+        .card::after {
+            content: '';
             position: absolute;
-            right: -30px; top: -20px;
-            font-family: 'Amiri', serif;
-            font-size: 14rem;
-            color: rgba(194,163,120,0.04);
-            pointer-events: none;
-            white-space: nowrap;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform var(--ease);
         }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 28px 56px rgba(38,25,15,0.09);
+            border-color: rgba(194,163,120,0.32);
+        }
+        .card:hover::after { transform: scaleX(1); }
 
-        .course-tag {
-            display: inline-block;
-            background: rgba(194,163,120,0.12);
-            color: var(--accent-gold);
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 5px 14px;
-            border-radius: 4px;
-            border: 1px solid rgba(194,163,120,0.2);
-            margin-bottom: 16px;
-        }
-        .course-banner h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2rem, 3.5vw, 2.8rem);
-            font-weight: 700;
-            color: var(--white);
-            margin: 0 0 14px;
-            line-height: 1.1;
-        }
-        .course-banner > div > p {
-            color: rgba(230,213,188,0.6);
-            font-size: 0.93rem;
-            line-height: 1.75;
-            max-width: 500px;
-            margin: 0 0 28px;
-        }
-        .course-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
-        .course-pill {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--gold-light);
-            font-size: 11px;
-            font-weight: 600;
-            padding: 6px 14px;
-            border-radius: 4px;
-        }
-        .course-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-
-        .course-visual {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(194,163,120,0.18);
+        .icon-box {
+            width: 72px; height: 72px;
+            background: var(--gold-pale);
             border-radius: 18px;
-            padding: 42px 38px;
-            text-align: center;
-            min-width: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 26px;
+            border: 1px solid rgba(194,163,120,0.12);
+            transition: background var(--ease), transform var(--ease);
         }
-        .course-visual-num {
+        .card svg {
+            width: 32px; height: 32px;
+            fill: var(--gold);
+            transition: fill var(--ease);
+        }
+        .card:hover .icon-box {
+            background: var(--bg-dark);
+            transform: rotate(8deg) scale(1.08);
+        }
+        .card:hover svg { fill: var(--gold); }
+
+        .card h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 5rem;
+            font-size: 1.65rem;
             font-weight: 700;
-            color: var(--accent-gold);
-            line-height: 1;
-            display: block;
+            color: var(--bg-dark);
+            margin-bottom: 10px;
         }
-        .course-visual-label {
-            font-size: 10px;
-            color: rgba(194,163,120,0.5);
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-top: 8px;
+
+        .card p {
+            font-size: 0.875rem;
+            color: var(--muted);
+            line-height: 1.72;
         }
 
         /* ─── FOOTER ─── */
         footer {
             background: var(--bg-dark);
-            padding: 70px 30px 35px;
-            border-top: 1px solid rgba(194,163,120,0.1);
+            color: var(--white);
+            padding: 72px 24px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(194,163,120,0.08);
         }
-        .footer-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 50px;
-            padding-bottom: 45px;
-            border-bottom: 1px solid rgba(194,163,120,0.08);
-            margin-bottom: 28px;
-        }
+
         .footer-brand {
-            display: block;
-            font-size: 1.1rem;
-            font-weight: 800;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
             letter-spacing: 3px;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 32px;
+            display: block;
+            color: var(--gold);
         }
-        .footer-desc {
-            color: rgba(255,255,255,0.35);
-            font-size: 0.85rem;
-            max-width: 300px;
-            line-height: 1.7;
+
+        .footer-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 40px;
         }
-        .footer-links { display: flex; flex-direction: column; gap: 12px; }
+
         .contact-link {
-            color: rgba(230,213,188,0.6);
+            color: rgba(214,190,158,0.7);
             text-decoration: none;
             font-size: 13px;
-            display: flex; align-items: center; gap: 10px;
-            transition: color var(--transition);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 20px;
+            border: 1px solid rgba(194,163,120,0.18);
+            border-radius: 50px;
+            transition: background var(--ease), color var(--ease), border-color var(--ease);
         }
-        .contact-link svg { width: 15px; height: 15px; fill: currentColor; }
-        .contact-link:hover { color: var(--accent-gold); }
-        .footer-copy {
-            max-width: 1100px;
-            margin: 0 auto;
-            font-size: 11px;
-            color: rgba(255,255,255,0.2);
-            letter-spacing: 1px;
+        .contact-link svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
+        .contact-link:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+            border-color: var(--gold);
+        }
+
+        .copyright {
+            font-size: 10.5px;
+            color: rgba(154,139,128,0.7);
             text-transform: uppercase;
+            letter-spacing: 1.2px;
         }
 
-        /* ─── MODAL ─── */
-        .modal {
-            position: fixed; inset: 0;
-            background: rgba(42,33,24,0.88);
-            display: none; align-items: center; justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(10px);
-        }
-        .modal-box {
-            background: var(--bg-page);
-            padding: 50px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 380px; width: 90%;
-            border: 1px solid rgba(194,163,120,0.25);
-            animation: zoomIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .modal-box h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem; margin: 0 0 10px; color: var(--bg-dark);
-        }
-        .modal-box p { color: var(--text-muted); margin: 0 0 28px; font-size: 0.95rem; }
-        .btn-modal {
-            background: var(--bg-dark); color: var(--white);
-            border: none; padding: 13px 32px;
-            border-radius: 4px; font-weight: 700; font-size: 12px;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            cursor: pointer; transition: var(--transition);
-            font-family: 'Montserrat', sans-serif;
-        }
-        .btn-modal:hover { background: var(--accent-gold); color: var(--bg-dark); }
-
-        /* ─── REVEAL ─── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transition-delay: var(--delay, 0s);
-        }
-        .reveal.visible { opacity: 1; transform: none; }
-
-        @keyframes heroReveal {
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
             from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0);    }
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.92); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0);     }
         }
 
-        @media (max-width: 900px) {
-            .features-grid { grid-template-columns: 1fr; }
-            .features-header { grid-template-columns: 1fr; }
-            .course-banner { grid-template-columns: 1fr; }
-            .course-visual { display: none; }
-            .footer-inner { flex-direction: column; gap: 30px; }
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .nav-links { gap: 18px; }
+            .nav-link { font-size: 10.5px; }
+            .logo-link span { display: none; }
+            .prayer-bar {
+                grid-template-columns: repeat(3, 1fr);
+                margin: -42px 12px 0;
+            }
+            .prayer-time:nth-child(3) { border-right: none; }
+            .prayer-time:nth-child(4) { border-top: 1px solid #f3ede4; }
+            .ayah-card { padding: 48px 24px; }
+            .card { padding: 36px 28px; }
         }
-        @media (max-width: 700px) {
-            .prayer-bar { grid-template-columns: repeat(2, 1fr); padding: 16px; }
-            .ayah-card { padding: 50px 28px; }
-            .hero h1 { letter-spacing: -0.5px; }
+
+        @media (max-width: 480px) {
+            .prayer-bar { grid-template-columns: repeat(2, 1fr); }
+            .prayer-time:nth-child(2) { border-right: none; }
+            .prayer-time:nth-child(3) { border-right: 1px solid #f3ede4; border-top: 1px solid #f3ede4; }
+            .prayer-time:nth-child(3n) { border-right: none; }
         }
     </style>
 </head>
@@ -715,153 +571,103 @@
 <div class="top-bar">
     <div id="hijri-date">...</div>
     <div id="location-text">Определение...</div>
-    <div id="tz-info">Часовой пояс: ...</div>
 </div>
 
-<header>
-    <div class="header-inner">
+<header class="main-header">
+    <div class="header-container">
         <a href="index.html" class="logo-link">
-            <img src="logo.png" class="logo-img" alt="Ummah" onerror="this.src='https://via.placeholder.com/40/c2a378/ffffff?text=U'">
-            Ummah Online
+            <img src="logo.png" class="logo-img-sm" alt="Ummah Logo" onerror="this.src='https://via.placeholder.com/42/c2a378/ffffff?text=U'">
+            <span>UMMAH ONLINE</span>
         </a>
         <nav class="nav-links">
             <a href="quran.html" class="nav-link">Коран</a>
-            <a href="azan.html" class="nav-link">Намаз</a>
-            <a href="javascript:void(0)" onclick="openModal()" class="nav-link">Обучение</a>
+            <a href="azan.html" class="nav-link">Времена Молитв</a>
+            <a href="https://markaz.ummahonline.org" target="_blank" class="nav-link">Обучение</a>
         </nav>
     </div>
 </header>
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-geo"></div>
+    <div class="hero-photo"></div>
+    <div class="hero-overlay"></div>
+
     <div class="hero-content">
-        <div class="hero-badge">Ummah Online</div>
+        <div class="hero-logo-box">
+            <img src="logo.png" alt="Ummah Logo" onerror="this.src='https://via.placeholder.com/100/c2a378/ffffff?text=Ummah'">
+        </div>
+        <div class="hero-eyebrow">Ummah Online</div>
         <span class="hero-arabic">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
-        <h1>Путь к знаниям<br>и <em>вере</em></h1>
-        <p class="hero-sub">Коран с тафсиром, времена намаза и структурированное исламское обучение — всё в одном месте.</p>
-        <div class="hero-cta">
+        <h1>Путь к <em>знаниям</em><br>и вере</h1>
+        <p>Ваш надёжный проводник в мире исламского образования и духовной практики.</p>
+        <div class="hero-buttons">
             <a href="quran.html" class="btn btn-gold">Открыть Коран</a>
             <a href="azan.html" class="btn btn-ghost">Время намаза</a>
         </div>
     </div>
+
     <div class="hero-arc">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,120 L0,65 Q360,5 720,45 Q1080,85 1440,20 L1440,120 Z" fill="#fdfaf5"/>
+        <svg viewBox="0 0 1440 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,110 L0,55 Q360,0 720,38 Q1080,76 1440,18 L1440,110 Z" fill="#fdfaf5"/>
         </svg>
     </div>
 </section>
 
 <!-- PRAYER BAR -->
 <div class="prayer-bar" id="prayer-bar">
-    <div class="prayer-time" id="fajr"><span class="name">Фаджр</span><span class="time">--:--</span></div>
-    <div class="prayer-time" id="sunrise"><span class="name">Восход</span><span class="time">--:--</span></div>
-    <div class="prayer-time" id="dhuhr"><span class="name">Зухр</span><span class="time">--:--</span></div>
-    <div class="prayer-time" id="asr"><span class="name">Аср</span><span class="time">--:--</span></div>
-    <div class="prayer-time" id="maghrib"><span class="name">Магриб</span><span class="time">--:--</span></div>
-    <div class="prayer-time" id="isha"><span class="name">Иша</span><span class="time">--:--</span></div>
-    <div class="next-prayer" id="next-prayer">
-        <div>
-            <div class="label">Следующая молитва</div>
-            <div class="value" id="next-prayer-name">...</div>
-        </div>
-        <div class="countdown" id="next-prayer-countdown">--:--</div>
-    </div>
+    <div class="prayer-time" id="fajr">   <span class="name">Фаджр</span>  <span class="time">--:--</span></div>
+    <div class="prayer-time" id="sunrise"><span class="name">Восход</span>  <span class="time">--:--</span></div>
+    <div class="prayer-time" id="dhuhr">  <span class="name">Зухр</span>   <span class="time">--:--</span></div>
+    <div class="prayer-time" id="asr">    <span class="name">Аср</span>    <span class="time">--:--</span></div>
+    <div class="prayer-time" id="maghrib"><span class="name">Магриб</span> <span class="time">--:--</span></div>
+    <div class="prayer-time" id="isha">   <span class="name">Иша</span>   <span class="time">--:--</span></div>
 </div>
-<div class="error-banner" id="error-banner"></div>
 
-<!-- AYAH -->
-<section class="ayah-section">
-    <div class="container">
-        <div class="ayah-card loading reveal" id="daily-ayah">
-            <div class="ayah-ar" id="ayah-ar">...</div>
-            <div class="ayah-ru" id="ayah-ru">...</div>
-            <div class="ayah-ref" id="ayah-ref">...</div>
-            <div class="ayah-label">Аят дня</div>
-        </div>
-    </div>
-</section>
+<!-- MAIN -->
+<main class="container">
 
-<!-- FEATURES -->
-<section class="features-section">
-    <div class="container">
-        <div class="features-header reveal">
-            <div>
-                <div class="section-eyebrow">Возможности</div>
-                <h2 class="section-title">Всё необходимое<br>для практики веры</h2>
-            </div>
-            <p class="section-sub">Три ключевых инструмента, созданных с заботой о каждом мусульманине.</p>
-        </div>
-        <div class="features-grid">
-            <a href="quran.html" class="feature-card reveal" style="--delay:0.05s">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path d="M19 2H5c-1.11 0-2 .9-2 2v16c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 14.5l-3.5-2 3.5-2 3.5 2-3.5 2zM19 8H5V6h14v2z"/></svg>
-                </div>
-                <div class="feature-num">01</div>
-                <h3>Коран с тафсиром</h3>
-                <p>Все 114 сур с арабским текстом, переводом смыслов и развёрнутым тафсиром Ибн Касира для каждого аята.</p>
-                <div class="feature-arrow">→</div>
-            </a>
-            <a href="azan.html" class="feature-card reveal" style="--delay:0.12s">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                </div>
-                <div class="feature-num">02</div>
-                <h3>Время намаза</h3>
-                <p>Точное расписание пяти молитв по вашему местоположению с автоматическим отсчётом до следующего намаза.</p>
-                <div class="feature-arrow">→</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openModal()" class="feature-card reveal" style="--delay:0.19s">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5.89 12.55L12 15.89l6.11-3.34c.66.36 1.1 1.05 1.1 1.84 0 1.16-.94 2.11-2.11 2.11H4.89c-1.16 0-2.11-.94-2.11-2.11 0-.79.44-1.48 1.11-1.84z"/></svg>
-                </div>
-                <div class="feature-num">03</div>
-                <h3>Академия</h3>
-                <p>Структурированные курсы по основам Ислама и арабскому языку — для начинающих и продолжающих.</p>
-                <div class="feature-arrow">→</div>
-            </a>
-        </div>
+    <!-- Ayah of the day -->
+    <div class="ayah-card reveal" id="daily-ayah">
+        <div id="ayah-ar" class="ayah-ar">فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ</div>
+        <div id="ayah-ru" class="ayah-ru">«Поминайте Меня, и Я буду помнить о вас. Благодарите Меня и не будьте неблагодарны Мне»</div>
+        <div id="ayah-ref" class="ayah-ref">Аль-Бакара, 2:152</div>
+        <p class="ayah-label">Аят дня</p>
     </div>
-</section>
 
-<!-- COURSE -->
-<section class="course-section">
-    <div class="container">
-        <div class="course-banner reveal">
-            <div>
-                <div class="course-tag">Новый курс</div>
-                <h2>Основы Ислама<br>за 4 недели</h2>
-                <p>Короткие уроки, живые сессии и практические задания — чтобы уверенно изучать акыду, фикх и исламскую этику.</p>
-                <div class="course-pills">
-                    <span class="course-pill">8 видеоуроков</span>
-                    <span class="course-pill">Материалы PDF</span>
-                    <span class="course-pill">Проверка знаний</span>
-                    <span class="course-pill">Живые сессии</span>
-                </div>
-                <div class="course-cta">
-                    <button onclick="openModal()" class="btn btn-gold">Записаться</button>
-                    <button onclick="openModal()" class="btn btn-dim">Программа курса</button>
-                </div>
+    <!-- Feature cards -->
+    <div class="features-grid">
+        <a href="quran.html" class="card reveal" style="--delay:0.1s">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24"><path d="M19 2H5c-1.11 0-2 .9-2 2v16c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 14.5l-3.5-2 3.5-2 3.5 2-3.5 2zM19 8H5V6h14v2z"/></svg>
             </div>
-            <div class="course-visual">
-                <span class="course-visual-num">4</span>
-                <div class="course-visual-label">недели</div>
+            <h3>Коран Онлайн</h3>
+            <p>Весь Священный Коран с переводом смыслов и тафсиром Ибн Касира.</p>
+        </a>
+        <a href="azan.html" class="card reveal" style="--delay:0.22s">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
             </div>
-        </div>
+            <h3>Время намаза</h3>
+            <p>Точное расписание молитв для вашего местоположения.</p>
+        </a>
+        <a href="https://markaz.ummahonline.org" target="_blank" class="card reveal" style="--delay:0.34s">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5.89 12.55L12 15.89l6.11-3.34c.66.36 1.1 1.05 1.1 1.84 0 1.16-.94 2.11-2.11 2.11H4.89c-1.16 0-2.11-.94-2.11-2.11 0-.79.44-1.48 1.11-1.84z"/></svg>
+            </div>
+            <h3>Академия</h3>
+            <p>Курсы по Корану и арабскому языку.</p>
+        </a>
     </div>
-</section>
+
+</main>
 
 <!-- FOOTER -->
 <footer>
-    <div class="footer-inner">
-        <div>
-            <span class="footer-brand">Ummah Online</span>
-            <p class="footer-desc">Ваш надёжный проводник в мире исламского образования и духовной практики.</p>
-        </div>
-        <div class="footer-links">
+    <div class="footer-content">
+        <span class="footer-brand">Ummah Online</span>
+        <div class="footer-contacts">
             <a href="mailto:umar@ummahonline.org" class="contact-link">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 umar@ummahonline.org
             </a>
             <a href="https://t.me/ummahonline" target="_blank" rel="noopener" class="contact-link">
@@ -869,49 +675,24 @@
                 t.me/ummahonline
             </a>
         </div>
+        <p class="copyright">&copy; 2026 Ummah Online. Все права защищены.</p>
     </div>
-    <p class="footer-copy">© 2026 Ummah Online. Все права защищены.</p>
 </footer>
 
-<!-- MODAL -->
-<div class="modal" id="modal" role="dialog" aria-modal="true">
-    <div class="modal-box">
-        <h2>Академия</h2>
-        <p>Скоро, ин шаа Аллах</p>
-        <button class="btn-modal" onclick="closeModal()">Закрыть</button>
-    </div>
-</div>
-
 <script>
-    const CACHE_TTL = 60 * 24;
-    const PRAYER_METHOD = 3;
-
-    function openModal() { document.getElementById('modal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('modal').style.display = 'none'; }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.13, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    function saveCache(key, payload) {
-        localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), payload }));
-    }
-    function readCache(key) {
-        const raw = localStorage.getItem(key);
-        if (!raw) return null;
-        try {
-            const d = JSON.parse(raw);
-            if ((Date.now() - d.savedAt) / 60000 > CACHE_TTL) return null;
-            return d.payload;
-        } catch { return null; }
-    }
-
+    // Ayah of the day
     async function fetchDailyAyah() {
-        const today = new Date().toISOString().slice(0, 10);
-        const cached = readCache(`ayah:${today}`);
-        if (cached) { applyAyah(cached); return; }
         try {
             const n = Math.floor(Math.random() * 6236) + 1;
             const [ruRes, arRes] = await Promise.all([
@@ -920,108 +701,62 @@
             ]);
             const [ru, ar] = await Promise.all([ruRes.json(), arRes.json()]);
             if (ru.code === 200) {
-                const payload = {
-                    ar: ar.data.text,
-                    ru: ru.data.text,
-                    ref: `${ru.data.surah.englishName} ${ru.data.surah.number}:${ru.data.numberInSurah}`
-                };
-                saveCache(`ayah:${today}`, payload);
-                applyAyah(payload);
+                document.getElementById('ayah-ar').innerText = ar.data.text;
+                document.getElementById('ayah-ru').innerText = `«${ru.data.text}»`;
+                document.getElementById('ayah-ref').innerText = `${ru.data.surah.englishName}, ${ru.data.surah.number}:${ru.data.numberInSurah}`;
             }
-        } catch (e) { console.error(e); }
+        } catch(e) { console.error(e); }
     }
 
-    function applyAyah(p) {
-        document.getElementById('ayah-ar').innerText = p.ar;
-        document.getElementById('ayah-ru').innerText = `«${p.ru}»`;
-        document.getElementById('ayah-ref').innerText = p.ref;
-        document.getElementById('daily-ayah').classList.remove('loading');
-    }
-
-    function updatePrayerUI(t, hijri, meta) {
-        document.querySelector('#fajr .time').innerText = t.Fajr;
-        document.querySelector('#sunrise .time').innerText = t.Sunrise;
-        document.querySelector('#dhuhr .time').innerText = t.Dhuhr;
-        document.querySelector('#asr .time').innerText = t.Asr;
-        document.querySelector('#maghrib .time').innerText = t.Maghrib;
-        document.querySelector('#isha .time').innerText = t.Isha;
-        document.getElementById('hijri-date').innerText = `${hijri.day} ${hijri.month.en} ${hijri.year} AH`;
-        if (meta?.timezone) document.getElementById('tz-info').innerText = `Часовой пояс: ${meta.timezone}`;
-        highlightCurrent(t);
-        scheduleNext(t);
+    // Prayer times
+    async function fetchPrayerTimes(lat, lon) {
+        try {
+            const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
+            const data = await res.json();
+            if (data.code === 200) {
+                const t = data.data.timings;
+                const h = data.data.date.hijri;
+                document.querySelector('#fajr .time').innerText    = t.Fajr;
+                document.querySelector('#sunrise .time').innerText = t.Sunrise;
+                document.querySelector('#dhuhr .time').innerText   = t.Dhuhr;
+                document.querySelector('#asr .time').innerText     = t.Asr;
+                document.querySelector('#maghrib .time').innerText = t.Maghrib;
+                document.querySelector('#isha .time').innerText    = t.Isha;
+                document.getElementById('hijri-date').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
+                highlightCurrent(t);
+            }
+        } catch(e) { console.error(e); }
     }
 
     function highlightCurrent(t) {
         const now = new Date();
         const cur = now.getHours() * 60 + now.getMinutes();
         const p = s => { const [h,m] = s.split(':').map(Number); return h*60+m; };
-        const ids = ['fajr','dhuhr','asr','maghrib','isha'];
-        const times = [p(t.Fajr),p(t.Dhuhr),p(t.Asr),p(t.Maghrib),p(t.Isha)];
+        const ids   = ['fajr','dhuhr','asr','maghrib','isha'];
+        const times = [p(t.Fajr), p(t.Dhuhr), p(t.Asr), p(t.Maghrib), p(t.Isha)];
         document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
         let idx = 0;
         for (let i = times.length - 1; i >= 0; i--) { if (cur >= times[i]) { idx = i; break; } }
         document.getElementById(ids[idx])?.classList.add('active');
     }
 
-    function scheduleNext(t) {
-        const order = [
-            { name:'Фаджр', time:t.Fajr },
-            { name:'Зухр', time:t.Dhuhr },
-            { name:'Аср', time:t.Asr },
-            { name:'Магриб', time:t.Maghrib },
-            { name:'Иша', time:t.Isha }
-        ];
-        const p = s => { const [h,m] = s.split(':').map(Number); return h*60+m; };
-        function tick() {
-            const now = new Date();
-            const cur = now.getHours() * 60 + now.getMinutes();
-            let next = null, tomorrow = false;
-            for (const pr of order) { if (cur < p(pr.time)) { next = pr; break; } }
-            if (!next) { next = order[0]; tomorrow = true; }
-            const mins = (p(next.time) + (tomorrow ? 1440 : 0)) - cur;
-            const h = Math.floor(mins / 60), m = mins % 60;
-            document.getElementById('next-prayer-name').innerText = next.name + (tomorrow ? ' (завтра)' : '');
-            document.getElementById('next-prayer-countdown').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-        }
-        tick();
-        setInterval(tick, 30000);
-    }
-
-    async function fetchPrayers(lat, lon) {
-        const today = new Date().toISOString().slice(0,10);
-        const ckey = `prayer:${today}:${lat.toFixed(2)},${lon.toFixed(2)}`;
-        const cached = readCache(ckey);
-        if (cached) { updatePrayerUI(cached.timings, cached.hijri, cached.meta); return; }
-        try {
-            const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=${PRAYER_METHOD}`);
-            const data = await res.json();
-            if (data.code === 200) {
-                const payload = { timings: data.data.timings, hijri: data.data.date.hijri, meta: data.data.meta };
-                saveCache(ckey, payload);
-                updatePrayerUI(payload.timings, payload.hijri, payload.meta);
-            }
-        } catch (e) { console.error(e); }
-    }
-
     async function getCity(lat, lon) {
         try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
-            const d = await res.json();
-            const city = d.address.city || d.address.town || d.address.village || 'Место определено';
+            const res  = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+            const data = await res.json();
+            const city = data.address.city || data.address.town || data.address.village || data.address.suburb || 'Место определено';
             document.getElementById('location-text').innerText = city;
-        } catch { document.getElementById('location-text').innerText = ''; }
+        } catch(e) { document.getElementById('location-text').innerText = 'Город не найден'; }
     }
 
     window.onload = () => {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        document.getElementById('tz-info').innerText = `Часовой пояс: ${tz}`;
         fetchDailyAyah();
-        fetchPrayers(55.75, 37.61);
+        fetchPrayerTimes(55.75, 37.61);
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                p => { fetchPrayers(p.coords.latitude, p.coords.longitude); getCity(p.coords.latitude, p.coords.longitude); },
+                p => { fetchPrayerTimes(p.coords.latitude, p.coords.longitude); getCity(p.coords.latitude, p.coords.longitude); },
                 () => { document.getElementById('location-text').innerText = 'Москва'; },
-                { timeout: 5000 }
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
             );
         }
     };
