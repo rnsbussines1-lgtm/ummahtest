@@ -5,76 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ummah Online | Главная</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #3d3129;
+            --bg-dark: #2a2118;
+            --bg-mid: #3d3129;
             --accent-gold: #c2a378;
+            --accent-bright: #d4b896;
             --gold-light: #e6d5bc;
-            --gold-gradient: linear-gradient(135deg, #c2a378 0%, #a68b64 100%);
+            --gold-pale: #f7f0e6;
             --white: #ffffff;
             --bg-page: #fdfaf5;
-            --card-bg: #ffffff;
-            --text-main: #4a3f35;
+            --text-main: #2a2118;
             --text-muted: #8c8279;
-            --transition-smooth: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-reveal: 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-            --shadow-soft: 0 10px 30px rgba(61, 49, 41, 0.06);
-            --shadow-strong: 0 20px 50px rgba(61, 49, 41, 0.12);
-            --ring: rgba(194, 163, 120, 0.35);
-            --panel: #fffdf8;
+            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
+
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
-            background-color: var(--bg-page);
+            background: var(--bg-page);
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
-            letter-spacing: 0.1px;
         }
 
-        a:focus-visible,
-        button:focus-visible {
-            outline: 2px solid var(--accent-gold);
-            outline-offset: 4px;
-            border-radius: 6px;
-        }
-
-        /* --- TOP BAR --- */
         .top-bar {
             background: var(--bg-dark);
-            color: var(--gold-light);
-            padding: 10px 20px;
+            color: rgba(230,213,188,0.7);
+            padding: 8px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
-            gap: 15px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid rgba(194, 163, 120, 0.15);
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(194,163,120,0.12);
         }
 
-        /* --- INTEGRATED HEADER --- */
-        header.main-header {
-            background: rgba(253, 250, 245, 0.95);
-            backdrop-filter: blur(15px);
+        header {
+            background: rgba(253,250,245,0.96);
+            backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(194, 163, 120, 0.15);
-            box-shadow: 0 2px 20px rgba(61, 49, 41, 0.03);
-            animation: fadeInDown 0.8s ease-out;
+            border-bottom: 1px solid rgba(194,163,120,0.15);
+            box-shadow: 0 2px 30px rgba(42,33,24,0.04);
         }
 
-        .header-container {
+        .header-inner {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 30px;
+            height: 68px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -86,829 +71,960 @@
             gap: 12px;
             text-decoration: none;
             color: var(--bg-dark);
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            flex-shrink: 0;
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        .logo-img-sm {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
+        .logo-img {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            border: 1.5px solid var(--accent-gold);
             object-fit: cover;
-            border: 1px solid var(--accent-gold);
         }
 
-        /* --- NAVIGATION --- */
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
+        .nav-links { display: flex; gap: 35px; align-items: center; }
 
         .nav-link {
             text-decoration: none;
             color: var(--text-main);
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            padding: 10px 0;
+            letter-spacing: 1.5px;
             position: relative;
-            transition: color var(--transition-smooth);
+            padding-bottom: 3px;
+            transition: color var(--transition);
         }
-
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 2px;
-            left: 50%;
-            width: 0;
-            height: 1.5px;
+            bottom: 0; left: 0;
+            width: 0; height: 1.5px;
             background: var(--accent-gold);
-            transition: width var(--transition-smooth), left var(--transition-smooth), opacity var(--transition-smooth);
-            transform: translateX(-50%);
-            border-radius: 4px;
-            opacity: 0;
+            transition: width var(--transition);
         }
-
         .nav-link:hover { color: var(--accent-gold); }
-        .nav-link:hover::after { width: 100%; opacity: 1; }
+        .nav-link:hover::after { width: 100%; }
 
-        /* --- HERO SECTION --- */
+        /* ─── HERO ─── */
         .hero {
             position: relative;
-            width: 100%;
+            min-height: 92vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            color: var(--white);
-            background: url('photo.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 65vh;
-            padding: 60px 20px 100px;
+            overflow: hidden;
+            background: var(--bg-dark);
         }
 
-        .hero::before {
-            content: '';
+        .hero-bg {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(160deg, rgba(61, 49, 41, 0.25), rgba(61, 49, 41, 0.75));
-            z-index: 1;
+            inset: 0;
+            background: url('photo.png') center/cover no-repeat;
+            opacity: 0.28;
         }
 
-        .hero-content { position: relative; z-index: 2; max-width: 820px; animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .hero-geo {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% 100%, rgba(194,163,120,0.1), transparent),
+                radial-gradient(ellipse 50% 50% at 80% 15%, rgba(194,163,120,0.07), transparent);
+        }
 
-        .hero-eyebrow {
+        .hero-arc {
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 100%; height: 120px;
+            overflow: hidden;
+        }
+        .hero-arc svg { width: 100%; height: 100%; display: block; }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 860px;
+            padding: 60px 30px 130px;
+            animation: heroReveal 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
+            gap: 10px;
+            padding: 7px 18px;
+            border: 1px solid rgba(194,163,120,0.35);
             border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.35);
-            background: rgba(255,255,255,0.08);
-            color: var(--gold-light);
+            color: var(--accent-bright);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 2px;
-            margin-bottom: 18px;
+            margin-bottom: 28px;
+            background: rgba(194,163,120,0.06);
+        }
+        .hero-badge::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            animation: pulse 2s ease infinite;
         }
 
-        .hero-logo-box {
-            width: 100px;
-            height: 100px;
-            background: var(--white);
-            margin: 0 auto 25px;
-            border-radius: 25px;
-            padding: 6px;
-            border: 2px solid var(--accent-gold);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        .hero-arabic {
+            font-family: 'Amiri', serif;
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            color: rgba(230,213,188,0.4);
+            display: block;
+            margin-bottom: 18px;
+            letter-spacing: 2px;
         }
-        .hero-logo-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; }
 
         .hero h1 {
-            font-size: clamp(32px, 7vw, 56px);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3.2rem, 9vw, 7rem);
             font-weight: 700;
-            margin-bottom: 20px;
             color: var(--white);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            letter-spacing: 0.8px;
+            margin: 0 0 8px;
+            line-height: 1.0;
+            letter-spacing: -1.5px;
+        }
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent-gold);
         }
 
-        .hero p {
-            font-size: clamp(16px, 2vw, 19px);
-            margin-bottom: 35px;
-            opacity: 0.9;
-            color: var(--gold-light);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .hero-sub {
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            color: rgba(230,213,188,0.7);
+            max-width: 500px;
+            margin: 22px auto 40px;
+            line-height: 1.75;
         }
 
-        .hero-cta {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
         .btn {
-            border: none;
-            padding: 13px 28px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: var(--transition-smooth);
+            padding: 14px 32px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
+            font-family: 'Montserrat', sans-serif;
         }
+        .btn-gold { background: var(--accent-gold); color: var(--bg-dark); }
+        .btn-gold:hover { background: var(--accent-bright); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(194,163,120,0.3); }
+        .btn-ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        .btn-dark { background: var(--bg-dark); color: var(--white); }
+        .btn-dark:hover { background: var(--bg-mid); transform: translateY(-2px); }
+        .btn-dim { background: rgba(255,255,255,0.07); color: var(--gold-light); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-dim:hover { background: rgba(255,255,255,0.13); }
 
-        .btn-primary {
-            background: var(--accent-gold);
-            color: var(--bg-dark);
-            box-shadow: 0 12px 30px rgba(194, 163, 120, 0.35);
-        }
-
-        .btn-primary:hover { transform: translateY(-2px); background: #b9966a; }
-        .btn-ghost {
-            background: rgba(255,255,255,0.12);
-            color: var(--white);
-            border: 1px solid rgba(255,255,255,0.4);
-        }
-        .btn-ghost:hover { background: rgba(255,255,255,0.28); }
-
-        /* --- PRAYER BAR --- */
+        /* ─── PRAYER BAR ─── */
         .prayer-bar {
-            background: var(--panel);
+            max-width: 1000px;
             margin: -55px auto 0;
             position: relative;
             z-index: 10;
-            max-width: 1000px;
-            border-radius: 24px;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 24px 28px;
+            box-shadow: 0 25px 60px rgba(42,33,24,0.12), 0 0 0 1px rgba(194,163,120,0.1);
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
-            padding: 22px;
-            box-shadow: var(--shadow-strong);
-            text-align: center;
-            border: 1px solid rgba(194, 163, 120, 0.1);
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
 
         .prayer-time {
-            background: #ffffff;
-            border-radius: 18px;
+            text-align: center;
             padding: 16px 10px;
-            border: 1px solid #f1e7d7;
-            box-shadow: 0 6px 16px rgba(61, 49, 41, 0.05);
-            position: relative;
-            overflow: hidden;
+            border-radius: 14px;
+            border: 1px solid rgba(194,163,120,0.1);
+            background: var(--bg-page);
+            transition: var(--transition);
         }
-        .prayer-time::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 18px;
-            border: 1px solid transparent;
-            transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
-        }
-        .prayer-time .name { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1.5px; }
-        .prayer-time .time { display: block; font-size: 1.4rem; font-weight: 700; color: var(--bg-dark); }
         .prayer-time.active {
             background: #fff7ea;
-            border-color: rgba(194, 163, 120, 0.45);
-            box-shadow: 0 12px 24px rgba(194, 163, 120, 0.18);
+            border-color: rgba(194,163,120,0.4);
+            box-shadow: 0 8px 20px rgba(194,163,120,0.12);
         }
+        .prayer-time .name {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .prayer-time .time { font-size: 1.3rem; font-weight: 700; color: var(--bg-dark); }
         .prayer-time.active .time { color: var(--accent-gold); }
-        .prayer-time.active::after { border-color: rgba(194, 163, 120, 0.45); }
 
         .next-prayer {
             grid-column: 1 / -1;
-            background: linear-gradient(135deg, #fff5e4 0%, #f6e6d0 100%);
-            border-radius: 20px;
-            padding: 18px 16px;
-            border: 1px solid rgba(194, 163, 120, 0.35);
+            background: linear-gradient(135deg, #2a2118, #3d3129);
+            border-radius: 14px;
+            padding: 18px 24px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6);
+            justify-content: space-between;
+            gap: 20px;
         }
-
-        .next-prayer .label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; }
-        .next-prayer .value { font-size: 1.35rem; font-weight: 700; color: var(--bg-dark); }
-        .next-prayer .countdown { font-size: 1rem; color: var(--accent-gold); font-weight: 700; }
+        .next-prayer .label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(194,163,120,0.5);
+        }
+        .next-prayer .value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-top: 4px;
+        }
+        .next-prayer .countdown {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
 
         .error-banner {
-            max-width: 1000px;
-            margin: 14px auto 0;
-            padding: 12px 18px;
-            border-radius: 14px;
-            background: #fff1f1;
-            border: 1px solid #f1b8b8;
-            color: #7a3d3d;
-            font-size: 12px;
-            display: none;
+            max-width: 1000px; margin: 12px auto 0;
+            padding: 10px 20px; border-radius: 12px;
+            background: #fff1f1; border: 1px solid #f1b8b8;
+            color: #7a3d3d; font-size: 12px; display: none;
         }
 
-        /* --- CONTENT CONTAINER --- */
-        .container { max-width: 1100px; margin: 90px auto 100px; padding: 0 20px; }
+        /* ─── CONTAINER ─── */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px) scale(0.98);
-            transition:
-                opacity var(--transition-reveal),
-                transform var(--transition-reveal);
-            transition-delay: var(--delay, 0s);
-            will-change: transform, opacity;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        /* ─── AYAH ─── */
+        .ayah-section { padding: 100px 0 60px; }
 
         .ayah-card {
-            background: var(--panel);
-            border-radius: 30px;
-            padding: 70px 40px;
+            background: var(--bg-dark);
+            border-radius: 24px;
+            padding: 70px 60px;
             text-align: center;
-            margin-bottom: 60px;
             position: relative;
-            box-shadow: 0 10px 30px rgba(61, 49, 41, 0.03);
-            border: 1px solid #f7f2eb;
+            overflow: hidden;
+        }
+        .ayah-card::before {
+            content: '"';
+            position: absolute;
+            top: -40px; left: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22rem;
+            color: rgba(194,163,120,0.04);
+            line-height: 1;
+            pointer-events: none;
         }
 
         .ayah-ar {
             font-family: 'Amiri', serif;
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            color: #5c4a3d;
-            margin-bottom: 30px;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--accent-bright);
             direction: rtl;
+            line-height: 2.1;
+            margin-bottom: 30px;
         }
-
         .ayah-ru {
-            font-size: 1.15rem;
-            color: var(--text-main);
-            line-height: 1.8;
-            max-width: 850px;
-            margin: 0 auto 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: rgba(230,213,188,0.8);
             font-style: italic;
+            max-width: 680px;
+            margin: 0 auto 18px;
+            line-height: 1.8;
         }
-
-        .ayah-ref { font-size: 13px; color: var(--accent-gold); font-weight: 600; }
-        .ayah-label { margin-top: 35px; font-size: 11px; color: var(--accent-gold); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; opacity: 0.6; }
+        .ayah-ref {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(194,163,120,0.45);
+        }
+        .ayah-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(194,163,120,0.35);
+        }
+        .ayah-label::before, .ayah-label::after {
+            content: '';
+            width: 35px; height: 1px;
+            background: rgba(194,163,120,0.2);
+        }
 
         .ayah-card.loading .ayah-ar,
         .ayah-card.loading .ayah-ru,
         .ayah-card.loading .ayah-ref {
             color: transparent;
-            background: linear-gradient(90deg, #f4ede3, #faf6f0, #f4ede3);
+            background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.09), rgba(255,255,255,0.04));
             background-size: 200% 100%;
-            animation: shimmer 1.6s infinite;
+            animation: shimmer 1.8s infinite;
             border-radius: 8px;
         }
+        .ayah-card.loading .ayah-ar { min-height: 45px; }
+        .ayah-card.loading .ayah-ru { min-height: 60px; }
+        .ayah-card.loading .ayah-ref { min-height: 16px; width: 140px; margin: 0 auto; }
 
-        .ayah-card.loading .ayah-ar { min-height: 36px; }
-        .ayah-card.loading .ayah-ru { min-height: 54px; }
-        .ayah-card.loading .ayah-ref { min-height: 18px; width: 160px; margin: 0 auto; }
+        /* ─── FEATURES ─── */
+        .features-section { padding: 100px 0; }
 
-        .prayer-bar.loading .prayer-time .time,
-        .prayer-bar.loading .next-prayer .value,
-        .prayer-bar.loading .next-prayer .countdown {
-            color: transparent;
-            background: linear-gradient(90deg, #f4ede3, #faf6f0, #f4ede3);
-            background-size: 200% 100%;
-            animation: shimmer 1.6s infinite;
-            border-radius: 8px;
-        }
-
-        /* --- FEATURED COURSE --- */
-        .course-teaser {
-            background: var(--panel);
-            border-radius: 28px;
-            padding: 40px;
+        .features-header {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 30px;
-            align-items: center;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid #f7f2eb;
-            margin-bottom: 100px;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: end;
+            margin-bottom: 55px;
         }
 
-        .course-teaser h3 { margin: 0 0 12px; font-size: 1.6rem; }
-        .course-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1.2px; }
-        .course-bullets { margin: 0 0 18px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
-        .course-bullets li { background: #fdf6eb; padding: 8px 14px; border-radius: 20px; font-size: 12px; border: 1px solid rgba(194, 163, 120, 0.2); }
-        .course-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-        .btn-light { background: #fff4e6; color: var(--bg-dark); border: 1px solid rgba(194, 163, 120, 0.35); }
-        .btn-light:hover { background: #ffe9cf; }
-        .course-visual {
-            background: linear-gradient(135deg, #f7efe5, #efddc7);
-            border-radius: 24px;
-            padding: 30px;
-            min-height: 190px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-weight: 600;
+        .section-eyebrow {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
             color: var(--bg-dark);
-            border: 1px solid rgba(194, 163, 120, 0.2);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
+            line-height: 1.1;
+            margin: 0 0 0;
+        }
+        .section-sub {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+            max-width: 420px;
+            align-self: end;
         }
 
-        /* --- CARDS GRID --- */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
         }
 
-        .card {
-            background: var(--panel);
-            padding: 50px 40px;
-            border-radius: 25px;
+        .feature-card {
+            background: var(--white);
+            border: 1px solid rgba(194,163,120,0.14);
+            border-radius: 20px;
+            padding: 38px 32px;
             text-decoration: none;
             color: inherit;
-            transition: var(--transition-smooth);
-            text-align: center;
-            border: 1px solid #f7f2eb;
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-
-        .card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 30px 60px rgba(61, 49, 41, 0.08);
-            border-color: var(--accent-gold);
-        }
-
-        .card .icon-box {
-            width: 80px; height: 80px;
-            background: #fdfaf5;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-            border: 1px solid rgba(194, 163, 120, 0.1);
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.6s;
-        }
-
-        .card svg { width: 38px; height: 38px; fill: var(--accent-gold); transition: fill 0.6s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .card:hover .icon-box { background: var(--accent-gold); transform: rotate(10deg) scale(1.1); }
-        .card:hover svg { fill: var(--white); transform: scale(1.1); }
-
-        /* --- MODAL --- */
-        .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(61, 49, 41, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(8px);
-        }
-        .modal-content {
-            background: var(--panel);
-            padding: 40px;
-            border-radius: 24px;
-            text-align: center;
-            max-width: 420px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            border: 1px solid var(--accent-gold);
-            animation: zoomIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .modal-content h2 { color: var(--bg-dark); margin-bottom: 10px; font-weight: 700; }
-        .close-btn {
-            margin-top: 25px;
-            background: var(--accent-gold);
-            color: var(--white);
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
             cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition-smooth);
         }
-        .close-btn:hover { background: var(--bg-dark); transform: scale(1.05); }
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent-gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition);
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(42,33,24,0.08);
+            border-color: rgba(194,163,120,0.3);
+        }
+        .feature-card:hover::after { transform: scaleX(1); }
 
-        /* --- FOOTER --- */
-        footer { background: var(--bg-dark); color: var(--white); padding: 80px 20px 40px; text-align: center; border-top: 1px solid rgba(194, 163, 120, 0.2); }
-        .footer-brand { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 30px; display: block; color: var(--accent-gold); }
-        .footer-contacts { display: flex; flex-direction: column; gap: 15px; align-items: center; margin-bottom: 40px; }
-        .contact-link { color: var(--gold-light); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 10px; transition: var(--transition-smooth); padding: 8px 16px; border: 1px solid rgba(194, 163, 120, 0.2); border-radius: 50px; }
-        .contact-link:hover { background: var(--accent-gold); color: var(--bg-dark); border-color: var(--accent-gold); }
-        .copyright { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .feature-icon {
+            width: 52px; height: 52px;
+            background: var(--gold-pale);
+            border-radius: 13px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 26px;
+            border: 1px solid rgba(194,163,120,0.12);
+            transition: var(--transition);
+        }
+        .feature-card:hover .feature-icon { background: var(--bg-dark); border-color: var(--bg-dark); }
+        .feature-icon svg { width: 24px; height: 24px; fill: var(--accent-gold); transition: fill var(--transition); }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .feature-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.8rem;
+            color: rgba(194,163,120,0.4);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .feature-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: var(--bg-dark);
+        }
+        .feature-card p {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin: 0 0 22px;
+            flex: 1;
+        }
+        .feature-arrow { font-size: 1.1rem; color: var(--accent-gold); transition: transform var(--transition); }
+        .feature-card:hover .feature-arrow { transform: translateX(5px); }
+
+        /* ─── COURSE ─── */
+        .course-section { padding: 0 0 100px; }
+
+        .course-banner {
+            background: linear-gradient(135deg, #2a2118 0%, #45311f 100%);
+            border-radius: 24px;
+            padding: 60px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(194,163,120,0.12);
+        }
+        .course-banner::before {
+            content: 'بسم الله';
+            position: absolute;
+            right: -30px; top: -20px;
+            font-family: 'Amiri', serif;
+            font-size: 14rem;
+            color: rgba(194,163,120,0.04);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .course-tag {
+            display: inline-block;
+            background: rgba(194,163,120,0.12);
+            color: var(--accent-gold);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 4px;
+            border: 1px solid rgba(194,163,120,0.2);
+            margin-bottom: 16px;
+        }
+        .course-banner h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            color: var(--white);
+            margin: 0 0 14px;
+            line-height: 1.1;
+        }
+        .course-banner > div > p {
+            color: rgba(230,213,188,0.6);
+            font-size: 0.93rem;
+            line-height: 1.75;
+            max-width: 500px;
+            margin: 0 0 28px;
+        }
+        .course-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+        .course-pill {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--gold-light);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 4px;
+        }
+        .course-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .course-visual {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(194,163,120,0.18);
+            border-radius: 18px;
+            padding: 42px 38px;
+            text-align: center;
+            min-width: 190px;
+        }
+        .course-visual-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            line-height: 1;
+            display: block;
+        }
+        .course-visual-label {
+            font-size: 10px;
+            color: rgba(194,163,120,0.5);
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--bg-dark);
+            padding: 70px 30px 35px;
+            border-top: 1px solid rgba(194,163,120,0.1);
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 50px;
+            padding-bottom: 45px;
+            border-bottom: 1px solid rgba(194,163,120,0.08);
+            margin-bottom: 28px;
+        }
+        .footer-brand {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .footer-desc {
+            color: rgba(255,255,255,0.35);
+            font-size: 0.85rem;
+            max-width: 300px;
+            line-height: 1.7;
+        }
+        .footer-links { display: flex; flex-direction: column; gap: 12px; }
+        .contact-link {
+            color: rgba(230,213,188,0.6);
+            text-decoration: none;
+            font-size: 13px;
+            display: flex; align-items: center; gap: 10px;
+            transition: color var(--transition);
+        }
+        .contact-link svg { width: 15px; height: 15px; fill: currentColor; }
+        .contact-link:hover { color: var(--accent-gold); }
+        .footer-copy {
+            max-width: 1100px;
+            margin: 0 auto;
+            font-size: 11px;
+            color: rgba(255,255,255,0.2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ─── MODAL ─── */
+        .modal {
+            position: fixed; inset: 0;
+            background: rgba(42,33,24,0.88);
+            display: none; align-items: center; justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+        .modal-box {
+            background: var(--bg-page);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 380px; width: 90%;
+            border: 1px solid rgba(194,163,120,0.25);
+            animation: zoomIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .modal-box h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem; margin: 0 0 10px; color: var(--bg-dark);
+        }
+        .modal-box p { color: var(--text-muted); margin: 0 0 28px; font-size: 0.95rem; }
+        .btn-modal {
+            background: var(--bg-dark); color: var(--white);
+            border: none; padding: 13px 32px;
+            border-radius: 4px; font-weight: 700; font-size: 12px;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            cursor: pointer; transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+        }
+        .btn-modal:hover { background: var(--accent-gold); color: var(--bg-dark); }
+
+        /* ─── REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition-delay: var(--delay, 0s);
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        @keyframes heroReveal {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
         @media (max-width: 900px) {
-            .course-teaser { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .features-header { grid-template-columns: 1fr; }
+            .course-banner { grid-template-columns: 1fr; }
+            .course-visual { display: none; }
+            .footer-inner { flex-direction: column; gap: 30px; }
         }
-
-        @media (max-width: 768px) {
-            .nav-links { gap: 15px; }
-            .nav-link { font-size: 11px; }
-            .prayer-bar { margin: -45px 10px 0; padding: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .logo-link span { display: none; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-            .hero { background-attachment: scroll; }
+        @media (max-width: 700px) {
+            .prayer-bar { grid-template-columns: repeat(2, 1fr); padding: 16px; }
+            .ayah-card { padding: 50px 28px; }
+            .hero h1 { letter-spacing: -0.5px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="hijri-date" id="hijri-date">...</div>
-        <div class="location" id="location-text">Определение...</div>
-        <div class="tz-info" id="tz-info">Часовой пояс: ...</div>
+<div class="top-bar">
+    <div id="hijri-date">...</div>
+    <div id="location-text">Определение...</div>
+    <div id="tz-info">Часовой пояс: ...</div>
+</div>
+
+<header>
+    <div class="header-inner">
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" class="logo-img" alt="Ummah" onerror="this.src='https://via.placeholder.com/40/c2a378/ffffff?text=U'">
+            Ummah Online
+        </a>
+        <nav class="nav-links">
+            <a href="quran.html" class="nav-link">Коран</a>
+            <a href="azan.html" class="nav-link">Намаз</a>
+            <a href="javascript:void(0)" onclick="openModal()" class="nav-link">Обучение</a>
+        </nav>
     </div>
+</header>
 
-    <header class="main-header">
-        <div class="header-container">
-            <a href="index.html" class="logo-link">
-                <img src="logo.png" class="logo-img-sm" alt="Ummah Logo" onerror="this.src='https://via.placeholder.com/42/c2a378/ffffff?text=U'">
-                <span>UMMAH ONLINE</span>
-            </a>
-            <nav class="nav-links">
-                <a href="quran.html" class="nav-link">Коран</a>
-                <a href="azan.html" class="nav-link">Времена Молитв</a>
-                <a href="javascript:void(0)" onclick="openAcademyModal()" class="nav-link">Обучение</a>
-            </nav>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-geo"></div>
+    <div class="hero-content">
+        <div class="hero-badge">Ummah Online</div>
+        <span class="hero-arabic">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+        <h1>Путь к знаниям<br>и <em>вере</em></h1>
+        <p class="hero-sub">Коран с тафсиром, времена намаза и структурированное исламское обучение — всё в одном месте.</p>
+        <div class="hero-cta">
+            <a href="quran.html" class="btn btn-gold">Открыть Коран</a>
+            <a href="azan.html" class="btn btn-ghost">Время намаза</a>
         </div>
-    </header>
+    </div>
+    <div class="hero-arc">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,120 L0,65 Q360,5 720,45 Q1080,85 1440,20 L1440,120 Z" fill="#fdfaf5"/>
+        </svg>
+    </div>
+</section>
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-logo-box">
-                <img src="logo.png" alt="Ummah Logo" onerror="this.src='https://via.placeholder.com/100/c2a378/ffffff?text=Ummah'">
-            </div>
-            <div class="hero-eyebrow">Ummah Online</div>
-            <h1>Путь к знаниям и вере</h1>
-            <p>Ваш надежный проводник в мире исламского образования и духовной практики.</p>
-            <div class="hero-cta">
-                <a class="btn btn-primary" href="quran.html">Открыть Коран</a>
-                <a class="btn btn-ghost" href="azan.html">Время молитв</a>
-            </div>
-        </div>
-    </section>
-
-    <div class="prayer-bar loading" id="prayer-bar">
-        <div class="prayer-time" id="fajr"><span class="name">Фаджр</span><span class="time">--:--</span></div>
-        <div class="prayer-time" id="sunrise"><span class="name">Восход</span><span class="time">--:--</span></div>
-        <div class="prayer-time" id="dhuhr"><span class="name">Зухр</span><span class="time">--:--</span></div>
-        <div class="prayer-time" id="asr"><span class="name">Аср</span><span class="time">--:--</span></div>
-        <div class="prayer-time" id="maghrib"><span class="name">Магриб</span><span class="time">--:--</span></div>
-        <div class="prayer-time" id="isha"><span class="name">Иша</span><span class="time">--:--</span></div>
-        <div class="next-prayer" id="next-prayer">
-            <span class="label">Следующая молитва</span>
+<!-- PRAYER BAR -->
+<div class="prayer-bar" id="prayer-bar">
+    <div class="prayer-time" id="fajr"><span class="name">Фаджр</span><span class="time">--:--</span></div>
+    <div class="prayer-time" id="sunrise"><span class="name">Восход</span><span class="time">--:--</span></div>
+    <div class="prayer-time" id="dhuhr"><span class="name">Зухр</span><span class="time">--:--</span></div>
+    <div class="prayer-time" id="asr"><span class="name">Аср</span><span class="time">--:--</span></div>
+    <div class="prayer-time" id="maghrib"><span class="name">Магриб</span><span class="time">--:--</span></div>
+    <div class="prayer-time" id="isha"><span class="name">Иша</span><span class="time">--:--</span></div>
+    <div class="next-prayer" id="next-prayer">
+        <div>
+            <div class="label">Следующая молитва</div>
             <div class="value" id="next-prayer-name">...</div>
-            <div class="countdown" id="next-prayer-countdown">...</div>
+        </div>
+        <div class="countdown" id="next-prayer-countdown">--:--</div>
+    </div>
+</div>
+<div class="error-banner" id="error-banner"></div>
+
+<!-- AYAH -->
+<section class="ayah-section">
+    <div class="container">
+        <div class="ayah-card loading reveal" id="daily-ayah">
+            <div class="ayah-ar" id="ayah-ar">...</div>
+            <div class="ayah-ru" id="ayah-ru">...</div>
+            <div class="ayah-ref" id="ayah-ref">...</div>
+            <div class="ayah-label">Аят дня</div>
         </div>
     </div>
+</section>
 
-    <div class="error-banner" id="error-banner">Не удалось загрузить данные. Повторите попытку позже.</div>
-
-    <main class="container">
-        <div class="ayah-card reveal loading" id="daily-ayah">
-            <div id="ayah-ar" class="ayah-ar">...</div>
-            <div id="ayah-ru" class="ayah-ru">...</div>
-            <div id="ayah-ref" class="ayah-ref">...</div>
-            <p class="ayah-label">Аят дня</p>
-        </div>
-
-        <section class="course-teaser reveal" style="--delay: 0.1s">
+<!-- FEATURES -->
+<section class="features-section">
+    <div class="container">
+        <div class="features-header reveal">
             <div>
-                <div class="course-meta">Новый курс</div>
-                <h3>Основы Ислама за 4 недели</h3>
+                <div class="section-eyebrow">Возможности</div>
+                <h2 class="section-title">Всё необходимое<br>для практики веры</h2>
+            </div>
+            <p class="section-sub">Три ключевых инструмента, созданных с заботой о каждом мусульманине.</p>
+        </div>
+        <div class="features-grid">
+            <a href="quran.html" class="feature-card reveal" style="--delay:0.05s">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 2H5c-1.11 0-2 .9-2 2v16c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 14.5l-3.5-2 3.5-2 3.5 2-3.5 2zM19 8H5V6h14v2z"/></svg>
+                </div>
+                <div class="feature-num">01</div>
+                <h3>Коран с тафсиром</h3>
+                <p>Все 114 сур с арабским текстом, переводом смыслов и развёрнутым тафсиром Ибн Касира для каждого аята.</p>
+                <div class="feature-arrow">→</div>
+            </a>
+            <a href="azan.html" class="feature-card reveal" style="--delay:0.12s">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                </div>
+                <div class="feature-num">02</div>
+                <h3>Время намаза</h3>
+                <p>Точное расписание пяти молитв по вашему местоположению с автоматическим отсчётом до следующего намаза.</p>
+                <div class="feature-arrow">→</div>
+            </a>
+            <a href="javascript:void(0)" onclick="openModal()" class="feature-card reveal" style="--delay:0.19s">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5.89 12.55L12 15.89l6.11-3.34c.66.36 1.1 1.05 1.1 1.84 0 1.16-.94 2.11-2.11 2.11H4.89c-1.16 0-2.11-.94-2.11-2.11 0-.79.44-1.48 1.11-1.84z"/></svg>
+                </div>
+                <div class="feature-num">03</div>
+                <h3>Академия</h3>
+                <p>Структурированные курсы по основам Ислама и арабскому языку — для начинающих и продолжающих.</p>
+                <div class="feature-arrow">→</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- COURSE -->
+<section class="course-section">
+    <div class="container">
+        <div class="course-banner reveal">
+            <div>
+                <div class="course-tag">Новый курс</div>
+                <h2>Основы Ислама<br>за 4 недели</h2>
                 <p>Короткие уроки, живые сессии и практические задания — чтобы уверенно изучать акыду, фикх и исламскую этику.</p>
-                <ul class="course-bullets">
-                    <li>8 видеоуроков</li>
-                    <li>Материалы в PDF</li>
-                    <li>Проверка знаний</li>
-                </ul>
-                <div class="course-actions">
-                    <a class="btn btn-primary" href="javascript:void(0)" onclick="openAcademyModal()">Записаться</a>
-                    <a class="btn btn-light" href="javascript:void(0)" onclick="openAcademyModal()">Программа</a>
+                <div class="course-pills">
+                    <span class="course-pill">8 видеоуроков</span>
+                    <span class="course-pill">Материалы PDF</span>
+                    <span class="course-pill">Проверка знаний</span>
+                    <span class="course-pill">Живые сессии</span>
+                </div>
+                <div class="course-cta">
+                    <button onclick="openModal()" class="btn btn-gold">Записаться</button>
+                    <button onclick="openModal()" class="btn btn-dim">Программа курса</button>
                 </div>
             </div>
             <div class="course-visual">
-                Старт набора: скоро
+                <span class="course-visual-num">4</span>
+                <div class="course-visual-label">недели</div>
             </div>
-        </section>
-
-        <div class="features-grid">
-            <a href="quran.html" class="card reveal" style="--delay: 0.1s">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24"><path d="M19 2H5c-1.11 0-2 .9-2 2v16c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 14.5l-3.5-2 3.5-2 3.5 2-3.5 2zM19 8H5V6h14v2z"/></svg>
-                </div>
-                <h3>Коран Онлайн</h3>
-                <p>Интерактивное чтение с тафсиром и переводами смыслов.</p>
-            </a>
-            <a href="azan.html" class="card reveal" style="--delay: 0.25s">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                </div>
-                <h3>Время намаза</h3>
-                <p>Точное расписание молитв для вашего местоположения.</p>
-            </a>
-            <a href="javascript:void(0)" onclick="openAcademyModal()" class="card reveal" style="--delay: 0.4s">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5.89 12.55L12 15.89l6.11-3.34c.66.36 1.1 1.05 1.1 1.84 0 1.16-.94 2.11-2.11 2.11H4.89c-1.16 0-2.11-.94-2.11-2.11 0-.79.44-1.48 1.11-1.84z"/></svg>
-                </div>
-                <h3>Академия</h3>
-                <p>Курсы по основам Ислама и арабскому языку.</p>
-            </a>
-        </div>
-    </main>
-
-    <div id="academyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="academyTitle" aria-hidden="true">
-        <div class="modal-content">
-            <h2 id="academyTitle">Академия</h2>
-            <p>Скоро, ин шаа Аллах</p>
-            <button class="close-btn" id="academyClose" onclick="closeAcademyModal()">Закрыть</button>
         </div>
     </div>
+</section>
 
-    <footer>
-        <div class="footer-content">
-            <span class="footer-brand">UMMAH ONLINE</span>
-            <div class="footer-contacts">
-                <a href="mailto:umar@ummahonline.org" class="contact-link">
-                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    umar@ummahonline.org
-                </a>
-                <a href="https://t.me/ummahonline" target="_blank" rel="noopener" class="contact-link">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .33z"/></svg>
-                    t.me/ummahonline
-                </a>
-            </div>
-            <p class="copyright">&copy; 2026 Ummah Online. Все права защищены.</p>
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <div>
+            <span class="footer-brand">Ummah Online</span>
+            <p class="footer-desc">Ваш надёжный проводник в мире исламского образования и духовной практики.</p>
         </div>
-    </footer>
+        <div class="footer-links">
+            <a href="mailto:umar@ummahonline.org" class="contact-link">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                umar@ummahonline.org
+            </a>
+            <a href="https://t.me/ummahonline" target="_blank" rel="noopener" class="contact-link">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .33z"/></svg>
+                t.me/ummahonline
+            </a>
+        </div>
+    </div>
+    <p class="footer-copy">© 2026 Ummah Online. Все права защищены.</p>
+</footer>
 
-    <script>
-        const CACHE_TTL_MINUTES = 60 * 24; // 1 day
-        const PRAYER_METHOD = 3;
+<!-- MODAL -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <h2>Академия</h2>
+        <p>Скоро, ин шаа Аллах</p>
+        <button class="btn-modal" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
 
-        function openAcademyModal() {
-            const modal = document.getElementById('academyModal');
-            modal.style.display = 'flex';
-            modal.setAttribute('aria-hidden', 'false');
-            document.getElementById('academyClose').focus();
-        }
-        function closeAcademyModal() {
-            const modal = document.getElementById('academyModal');
-            modal.style.display = 'none';
-            modal.setAttribute('aria-hidden', 'true');
-        }
+<script>
+    const CACHE_TTL = 60 * 24;
+    const PRAYER_METHOD = 3;
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeAcademyModal();
-        });
+    function openModal() { document.getElementById('modal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.15,
-            rootMargin: '0px 0px -50px 0px'
-        });
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    function saveCache(key, payload) {
+        localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), payload }));
+    }
+    function readCache(key) {
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        try {
+            const d = JSON.parse(raw);
+            if ((Date.now() - d.savedAt) / 60000 > CACHE_TTL) return null;
+            return d.payload;
+        } catch { return null; }
+    }
 
-        function setError(message) {
-            const banner = document.getElementById('error-banner');
-            banner.textContent = message;
-            banner.style.display = 'block';
-        }
-
-        function clearError() {
-            document.getElementById('error-banner').style.display = 'none';
-        }
-
-        function setTimezone(text) {
-            document.getElementById('tz-info').innerText = text;
-        }
-
-        function saveCache(key, payload) {
-            localStorage.setItem(key, JSON.stringify({
-                savedAt: Date.now(),
-                payload
-            }));
-        }
-
-        function readCache(key) {
-            const raw = localStorage.getItem(key);
-            if (!raw) return null;
-            try {
-                const data = JSON.parse(raw);
-                const ageMinutes = (Date.now() - data.savedAt) / 60000;
-                if (ageMinutes > CACHE_TTL_MINUTES) return null;
-                return data.payload;
-            } catch (e) {
-                return null;
+    async function fetchDailyAyah() {
+        const today = new Date().toISOString().slice(0, 10);
+        const cached = readCache(`ayah:${today}`);
+        if (cached) { applyAyah(cached); return; }
+        try {
+            const n = Math.floor(Math.random() * 6236) + 1;
+            const [ruRes, arRes] = await Promise.all([
+                fetch(`https://api.alquran.cloud/v1/ayah/${n}/ru.kuliev`),
+                fetch(`https://api.alquran.cloud/v1/ayah/${n}`)
+            ]);
+            const [ru, ar] = await Promise.all([ruRes.json(), arRes.json()]);
+            if (ru.code === 200) {
+                const payload = {
+                    ar: ar.data.text,
+                    ru: ru.data.text,
+                    ref: `${ru.data.surah.englishName} ${ru.data.surah.number}:${ru.data.numberInSurah}`
+                };
+                saveCache(`ayah:${today}`, payload);
+                applyAyah(payload);
             }
-        }
+        } catch (e) { console.error(e); }
+    }
 
-        async function fetchDailyAyah() {
-            const ayahCard = document.getElementById('daily-ayah');
-            ayahCard.classList.add('loading');
-            const todayKey = new Date().toISOString().slice(0, 10);
-            const cacheKey = `ayah:${todayKey}`;
-            const cached = readCache(cacheKey);
-            if (cached) {
-                applyAyah(cached);
-                return;
-            }
-            try {
-                const randomAyah = Math.floor(Math.random() * 6236) + 1;
-                const response = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyah}/ru.kuliev`);
-                const data = await response.json();
-                if (data.code === 200) {
-                    const ayah = data.data;
-                    const arResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyah}`);
-                    const arData = await arResponse.json();
-                    const payload = {
-                        ar: arData.data.text,
-                        ru: ayah.text,
-                        ref: `${ayah.surah.englishName}, ${ayah.surah.number}:${ayah.numberInSurah}`
-                    };
-                    saveCache(cacheKey, payload);
-                    applyAyah(payload);
-                }
-            } catch (e) {
-                console.error(e);
-                setError('Не удалось загрузить аят дня. Пожалуйста, попробуйте позже.');
-            }
-        }
+    function applyAyah(p) {
+        document.getElementById('ayah-ar').innerText = p.ar;
+        document.getElementById('ayah-ru').innerText = `«${p.ru}»`;
+        document.getElementById('ayah-ref').innerText = p.ref;
+        document.getElementById('daily-ayah').classList.remove('loading');
+    }
 
-        function applyAyah(payload) {
-            document.getElementById('ayah-ar').innerText = payload.ar;
-            document.getElementById('ayah-ru').innerText = `«${payload.ru}»`;
-            document.getElementById('ayah-ref').innerText = payload.ref;
-            document.getElementById('daily-ayah').classList.remove('loading');
-        }
+    function updatePrayerUI(t, hijri, meta) {
+        document.querySelector('#fajr .time').innerText = t.Fajr;
+        document.querySelector('#sunrise .time').innerText = t.Sunrise;
+        document.querySelector('#dhuhr .time').innerText = t.Dhuhr;
+        document.querySelector('#asr .time').innerText = t.Asr;
+        document.querySelector('#maghrib .time').innerText = t.Maghrib;
+        document.querySelector('#isha .time').innerText = t.Isha;
+        document.getElementById('hijri-date').innerText = `${hijri.day} ${hijri.month.en} ${hijri.year} AH`;
+        if (meta?.timezone) document.getElementById('tz-info').innerText = `Часовой пояс: ${meta.timezone}`;
+        highlightCurrent(t);
+        scheduleNext(t);
+    }
 
-        function updatePrayerUI(t, hijri, meta) {
-            document.querySelector('#fajr .time').innerText = t.Fajr;
-            document.querySelector('#sunrise .time').innerText = t.Sunrise;
-            document.querySelector('#dhuhr .time').innerText = t.Dhuhr;
-            document.querySelector('#asr .time').innerText = t.Asr;
-            document.querySelector('#maghrib .time').innerText = t.Maghrib;
-            document.querySelector('#isha .time').innerText = t.Isha;
-            document.getElementById('hijri-date').innerText = `${hijri.day} ${hijri.month.en} ${hijri.year} AH`;
+    function highlightCurrent(t) {
+        const now = new Date();
+        const cur = now.getHours() * 60 + now.getMinutes();
+        const p = s => { const [h,m] = s.split(':').map(Number); return h*60+m; };
+        const ids = ['fajr','dhuhr','asr','maghrib','isha'];
+        const times = [p(t.Fajr),p(t.Dhuhr),p(t.Asr),p(t.Maghrib),p(t.Isha)];
+        document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
+        let idx = 0;
+        for (let i = times.length - 1; i >= 0; i--) { if (cur >= times[i]) { idx = i; break; } }
+        document.getElementById(ids[idx])?.classList.add('active');
+    }
 
-            if (meta && meta.timezone) {
-                setTimezone(`Часовой пояс: ${meta.timezone}`);
-            }
-
-            document.getElementById('prayer-bar').classList.remove('loading');
-            highlightCurrent(t);
-            scheduleNextPrayer(t);
-        }
-
-        function scheduleNextPrayer(t) {
-            const order = [
-                { id: 'fajr', name: 'Фаджр', time: t.Fajr },
-                { id: 'dhuhr', name: 'Зухр', time: t.Dhuhr },
-                { id: 'asr', name: 'Аср', time: t.Asr },
-                { id: 'maghrib', name: 'Магриб', time: t.Maghrib },
-                { id: 'isha', name: 'Иша', time: t.Isha }
-            ];
-
-            function getNext() {
-                const now = new Date();
-                const curMinutes = now.getHours() * 60 + now.getMinutes();
-                const parse = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
-                for (let i = 0; i < order.length; i++) {
-                    const minutes = parse(order[i].time);
-                    if (curMinutes < minutes) {
-                        return { ...order[i], minutes, tomorrow: false };
-                    }
-                }
-                const fajrMinutes = parse(order[0].time) + 24 * 60;
-                return { ...order[0], minutes: fajrMinutes, tomorrow: true };
-            }
-
-            function tick() {
-                const now = new Date();
-                const curMinutes = now.getHours() * 60 + now.getMinutes();
-                const curSeconds = now.getSeconds();
-                const next = getNext();
-                const totalMinutes = next.minutes - curMinutes - (curSeconds > 0 ? 1 : 0);
-                const hours = Math.max(0, Math.floor(totalMinutes / 60));
-                const mins = Math.max(0, totalMinutes % 60);
-
-                document.getElementById('next-prayer-name').innerText = `${next.name}${next.tomorrow ? ' (завтра)' : ''}`;
-                document.getElementById('next-prayer-countdown').innerText = `Через ${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
-            }
-
-            tick();
-            setInterval(tick, 1000 * 30);
-        }
-
-        async function fetchPrayerTimes(lat, lon) {
-            document.getElementById('prayer-bar').classList.add('loading');
-            clearError();
-            const todayKey = new Date().toISOString().slice(0, 10);
-            const coordKey = `${lat.toFixed(2)},${lon.toFixed(2)}`;
-            const cacheKey = `prayer:${todayKey}:${coordKey}`;
-            const cached = readCache(cacheKey);
-            if (cached) {
-                updatePrayerUI(cached.timings, cached.hijri, cached.meta);
-                return;
-            }
-            try {
-                const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=${PRAYER_METHOD}`);
-                const data = await response.json();
-                if (data.code === 200) {
-                    const payload = {
-                        timings: data.data.timings,
-                        hijri: data.data.date.hijri,
-                        meta: data.data.meta
-                    };
-                    saveCache(cacheKey, payload);
-                    updatePrayerUI(payload.timings, payload.hijri, payload.meta);
-                } else {
-                    setError('Не удалось получить время намаза.');
-                }
-            } catch (e) {
-                console.error(e);
-                setError('Не удалось загрузить время намаза. Проверьте подключение.');
-            }
-        }
-
-        function highlightCurrent(t) {
+    function scheduleNext(t) {
+        const order = [
+            { name:'Фаджр', time:t.Fajr },
+            { name:'Зухр', time:t.Dhuhr },
+            { name:'Аср', time:t.Asr },
+            { name:'Магриб', time:t.Maghrib },
+            { name:'Иша', time:t.Isha }
+        ];
+        const p = s => { const [h,m] = s.split(':').map(Number); return h*60+m; };
+        function tick() {
             const now = new Date();
             const cur = now.getHours() * 60 + now.getMinutes();
-            const parse = s => { const [h,m] = s.split(':').map(Number); return h*60+m; };
-            const pIds = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
-            const times = [parse(t.Fajr), parse(t.Dhuhr), parse(t.Asr), parse(t.Maghrib), parse(t.Isha)];
-            document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
-            let idx = 0;
-            for (let i = times.length - 1; i >= 0; i--) { if (cur >= times[i]) { idx = i; break; } }
-            if (document.getElementById(pIds[idx])) document.getElementById(pIds[idx]).classList.add('active');
+            let next = null, tomorrow = false;
+            for (const pr of order) { if (cur < p(pr.time)) { next = pr; break; } }
+            if (!next) { next = order[0]; tomorrow = true; }
+            const mins = (p(next.time) + (tomorrow ? 1440 : 0)) - cur;
+            const h = Math.floor(mins / 60), m = mins % 60;
+            document.getElementById('next-prayer-name').innerText = next.name + (tomorrow ? ' (завтра)' : '');
+            document.getElementById('next-prayer-countdown').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
         }
+        tick();
+        setInterval(tick, 30000);
+    }
 
-        async function getCity(lat, lon) {
-            try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
-                const data = await res.json();
-                const city = data.address.city || data.address.town || data.address.village || data.address.suburb || 'Место определено';
-                document.getElementById('location-text').innerText = city;
-            } catch (e) {
-                document.getElementById('location-text').innerText = 'Город не найден';
+    async function fetchPrayers(lat, lon) {
+        const today = new Date().toISOString().slice(0,10);
+        const ckey = `prayer:${today}:${lat.toFixed(2)},${lon.toFixed(2)}`;
+        const cached = readCache(ckey);
+        if (cached) { updatePrayerUI(cached.timings, cached.hijri, cached.meta); return; }
+        try {
+            const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=${PRAYER_METHOD}`);
+            const data = await res.json();
+            if (data.code === 200) {
+                const payload = { timings: data.data.timings, hijri: data.data.date.hijri, meta: data.data.meta };
+                saveCache(ckey, payload);
+                updatePrayerUI(payload.timings, payload.hijri, payload.meta);
             }
-        }
+        } catch (e) { console.error(e); }
+    }
 
-        function setDefaultTimezone() {
-            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            setTimezone(`Часовой пояс: ${tz}`);
-        }
+    async function getCity(lat, lon) {
+        try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+            const d = await res.json();
+            const city = d.address.city || d.address.town || d.address.village || 'Место определено';
+            document.getElementById('location-text').innerText = city;
+        } catch { document.getElementById('location-text').innerText = ''; }
+    }
 
-        window.onload = () => {
-            setDefaultTimezone();
-            fetchDailyAyah();
-            fetchPrayerTimes(55.75, 37.61);
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (p) => {
-                        const lat = p.coords.latitude;
-                        const lon = p.coords.longitude;
-                        fetchPrayerTimes(lat, lon);
-                        getCity(lat, lon);
-                    },
-                    () => {
-                        document.getElementById('location-text').innerText = 'Москва';
-                    },
-                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-                );
-            }
-        };
-    </script>
+    window.onload = () => {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        document.getElementById('tz-info').innerText = `Часовой пояс: ${tz}`;
+        fetchDailyAyah();
+        fetchPrayers(55.75, 37.61);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                p => { fetchPrayers(p.coords.latitude, p.coords.longitude); getCity(p.coords.latitude, p.coords.longitude); },
+                () => { document.getElementById('location-text').innerText = 'Москва'; },
+                { timeout: 5000 }
+            );
+        }
+    };
+</script>
 </body>
 </html>
