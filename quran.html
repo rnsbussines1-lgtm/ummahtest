@@ -117,7 +117,53 @@
 
         .ar-name { font-family: 'Scheherazade New', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; color: #1a1a1a; }
         .ru-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 5px; text-align: center; color: var(--bg-dark); }
-        .ru-desc { font-size: 0.9rem; opacity: 0.6; font-style: italic; }
+        .ru-desc { font-size: 0.9rem; opacity: 0.6; font-style: italic; margin-bottom: 10px; }
+        .ayah-count {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--white);
+            background: var(--bg-dark);
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* nav between surahs */
+        .surah-nav {
+            display: flex;
+            gap: 16px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        .surah-nav-btn {
+            flex: 1;
+            background: var(--white);
+            border: 1.5px solid rgba(194,163,120,0.4);
+            border-radius: 16px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-decoration: none;
+        }
+        .surah-nav-btn:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 25px rgba(176,141,87,0.18);
+            transform: translateY(-3px);
+        }
+        .surah-nav-btn.prev { flex-direction: row-reverse; }
+        .nav-arrow { font-size: 1.5rem; color: var(--accent-gold); flex-shrink: 0; }
+        .nav-texts { display: flex; flex-direction: column; }
+        .surah-nav-btn.prev .nav-texts { text-align: right; }
+        .nav-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; }
+        .nav-name { font-size: 0.95rem; font-weight: 700; color: var(--bg-dark); }
+        .nav-ar { font-family: 'Scheherazade New', serif; font-size: 1.3rem; color: var(--accent-gold); }
+        .nav-count { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 
         #reading-view { display: none; }
 
@@ -364,11 +410,13 @@
             card.className = 'surah-card';
             card.style.animationDelay = `${i * 0.01}s`;
             card.onclick = () => openSurah(i);
+            const ayahCount = (surah.aya || surah.verses || []).length;
             card.innerHTML = `
                 <div class="surah-num">${i + 1}</div>
                 <span class="ar-name">${surah.name}</span>
                 <div class="ru-name">${parts[0]} ${parts[2] || ''}</div>
                 <div class="ru-desc">${parts[1]}</div>
+                <div class="ayah-count">${ayahCount} аятов</div>
             `;
             container.appendChild(card);
         });
@@ -473,6 +521,50 @@
             `;
             container.appendChild(div);
         });
+
+        // Навигация: предыдущая / следующая сура
+        const nav = document.createElement('div');
+        nav.className = 'surah-nav';
+
+        if (index > 0) {
+            const prev = qData[index - 1];
+            const prevParts = namesRu[index - 1].split(' — ');
+            const prevCount = (prev.aya || prev.verses || []).length;
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'surah-nav-btn prev';
+            prevBtn.onclick = () => openSurah(index - 1);
+            prevBtn.innerHTML = `
+                <span class="nav-arrow">→</span>
+                <div class="nav-texts">
+                    <span class="nav-label">Предыдущая сура</span>
+                    <span class="nav-ar">${prev.name}</span>
+                    <span class="nav-name">${prevParts[0]}</span>
+                    <span class="nav-count">${prevCount} аятов</span>
+                </div>
+            `;
+            nav.appendChild(prevBtn);
+        }
+
+        if (index < qData.length - 1) {
+            const next = qData[index + 1];
+            const nextParts = namesRu[index + 1].split(' — ');
+            const nextCount = (next.aya || next.verses || []).length;
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'surah-nav-btn next';
+            nextBtn.onclick = () => openSurah(index + 1);
+            nextBtn.innerHTML = `
+                <span class="nav-arrow">←</span>
+                <div class="nav-texts">
+                    <span class="nav-label">Следующая сура</span>
+                    <span class="nav-ar">${next.name}</span>
+                    <span class="nav-name">${nextParts[0]}</span>
+                    <span class="nav-count">${nextCount} аятов</span>
+                </div>
+            `;
+            nav.appendChild(nextBtn);
+        }
+
+        container.appendChild(nav);
 
         window.scrollTo(0, 0);
     }
