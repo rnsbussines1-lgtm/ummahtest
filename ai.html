@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CustomAI Smart Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Syntax Highlighting (Prism.js) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .chat-container { height: calc(100vh - 220px); }
+        .message { max-width: 90%; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        code { font-family: 'Fira Code', monospace !important; font-size: 0.85rem !important; }
+        pre { 
+            border-radius: 12px !important; 
+            margin: 12px 0 !important; 
+            background: #1e293b !important; 
+            border: 1px solid #334155 !important; 
+            padding: 1rem !important;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            overflow-x: auto;
+        }
+        
+        .cursor { display: inline-block; width: 6px; height: 1.1em; background: #60a5fa; margin-left: 4px; vertical-align: middle; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+        .user-msg { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .ai-msg { background: #1e293b; border: 1px solid #334155; }
+
+        .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .prose ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-slate-900 h-screen flex flex-col overflow-hidden">
+    <div class="max-w-6xl mx-auto w-full flex flex-col h-full p-4">
+        <!-- Шапка интерфейса -->
+        <header class="py-4 flex justify-between items-center border-b border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-white leading-tight">CustomAI <span class="text-blue-400">Smart</span></h1>
+                    <p id="memoryStatus" class="text-slate-500 text-[10px] uppercase tracking-widest font-semibold">Контекст: 0 сообщений</p>
+                </div>
+            </div>
+            <button id="clearChat" class="text-slate-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-slate-800" title="Очистить память">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Область чата -->
+        <div id="chatBox" class="chat-container overflow-y-auto py-6 space-y-6 flex-grow px-2">
+            <div class="message ai-msg p-5 rounded-2xl self-start shadow-sm">
+                <p class="text-blue-400 font-bold text-[10px] mb-2 uppercase tracking-widest">Интеллект</p>
+                <div class="text-slate-200">Я восстановил свою конфигурацию. Я помню контекст, умею искать информацию и красиво оформлять код. Что мы создадим сегодня?</div>
+            </div>
+        </div>
+
+        <!-- Индикатор загрузки -->
+        <div id="loadingIndicator" class="hidden px-4 py-2 flex items-center gap-3 text-slate-500 text-sm animate-pulse">
+            <div class="flex gap-1">
+                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+            </div>
+            <span>Анализ запроса и генерация ответа...</span>
+        </div>
+
+        <!-- Поле ввода -->
+        <div class="py-4">
+            <form id="chatForm" class="relative group">
+                <textarea id="userInput" rows="1"
+                    class="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 px-6 pr-14 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all resize-none shadow-xl placeholder:text-slate-600"
+                    placeholder="Напиши запрос здесь..." autocomplete="off"></textarea>
+                <button type="submit" id="sendBtn"
+                    class="absolute right-3 bottom-3 bg-blue-600 hover:bg-blue-500 text-white p-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20 active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = ""; // Ключ API вставляется средой автоматически
+
+        const MODEL_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=";
+        const MAX_OUTPUT_TOKENS = 8192; // Предел на один ответ (будет продолжение, если мало)
+        const MAX_CHUNKS = 6; // Сколько раз авто-продолжать длинный ответ
+        const LONG_TEXT_THRESHOLD = 50000; // Если ответ очень длинный, отключаем эффект печати
+        const MAX_HIGHLIGHT_CHARS = 200000; // Ограничение для подсветки кода
+
+        class SmartAI {
+            constructor() {
+                this.history = [];
+                this.maxHistory = 30;
+            }
+
+            async generateResponse(userQuery) {
+                this.history.push({ role: "user", parts: [{ text: userQuery }] });
+
+                const chunks = [];
+                let finishReason = "STOP";
+                let loops = 0;
+
+                try {
+                    do {
+                        const response = await this.fetchWithRetry(
+                            MODEL_URL + apiKey,
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    contents: this.history,
+                                    tools: [{ "google_search": {} }],
+                                    generationConfig: {
+                                        temperature: 0.35,
+                                        topP: 0.9,
+                                        maxOutputTokens: MAX_OUTPUT_TOKENS
+                                    },
+                                    systemInstruction: {
+                                        parts: [{
+                                            text: "Ты — очень мощный ИИ-инженер. Твоя задача — делать сложные задачи по программированию. Для любого кода ВСЕГДА используй блоки Markdown: ```язык
+код
+```. Если нужен очень большой код (десятки тысяч строк), генерируй его в нескольких последовательных частях, без пропусков и повторов, сохраняя нумерацию/структуру. Пиши подробно, структурированно и только на русском языке."
+                                        }]
+                                    }
+                                })
+                            }
+                        );
+
+                        const result = await response.json();
+                        const candidate = result.candidates?.[0];
+                        const parts = candidate?.content?.parts || [];
+                        const text = parts.map(p => p.text || "").join("") || "Извините, возникла ошибка при генерации.";
+
+                        chunks.push(text);
+                        this.history.push({ role: "model", parts: [{ text }] });
+
+                        finishReason = candidate?.finishReason || "STOP";
+                        loops += 1;
+
+                        if (finishReason === "MAX_TOKENS" && loops < MAX_CHUNKS) {
+                            this.history.push({
+                                role: "user",
+                                parts: [{
+                                    text: "Продолжай ровно с места остановки. Без повторов. Продолжи предыдущий ответ, сохраняя форматирование Markdown."
+                                }]
+                            });
+                        }
+
+                        if (this.history.length > this.maxHistory * 2) {
+                            this.history = this.history.slice(-this.maxHistory * 2);
+                        }
+                    } while (finishReason === "MAX_TOKENS" && loops < MAX_CHUNKS);
+
+                    this.updateUI();
+                    return chunks.join("
+
+");
+                } catch (error) {
+                    return "Произошла ошибка связи: " + error.message;
+                }
+            }
+
+            updateUI() {
+                const count = Math.floor(this.history.length / 2);
+                document.getElementById('memoryStatus').innerText = `Контекст: ${count} сообщений`;
+            }
+
+            async fetchWithRetry(url, options, retries = 5, backoff = 1000) {
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const res = await fetch(url, options);
+                        if (res.ok) return res;
+                        if (res.status === 429) throw new Error("Rate limit");
+                        await new Promise(r => setTimeout(r, backoff * Math.pow(2, i)));
+                    } catch (err) {
+                        if (i === retries - 1) throw err;
+                    }
+                }
+            }
+        }
+
+        const ai = new SmartAI();
+        const chatBox = document.getElementById('chatBox');
+        const chatForm = document.getElementById('chatForm');
+        const userInput = document.getElementById('userInput');
+        const loading = document.getElementById('loadingIndicator');
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function parseMarkdown(text) {
+            let processedText = text;
+            const parts = processedText.split(/```(\w+)?/);
+            let resultHtml = "";
+
+            for (let i = 0; i < parts.length; i++) {
+                if (i % 2 === 0) {
+                    let content = parts[i]
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/
+/g, '<br>');
+                    resultHtml += content;
+                } else {
+                    const lang = parts[i] || 'javascript';
+                    let codeContent = parts[++i] || "";
+
+                    if (codeContent.includes('```')) {
+                        codeContent = codeContent.split('```')[0];
+                    }
+
+                    resultHtml += `<pre><code class="language-${lang}">${escapeHtml(codeContent.trim())}</code></pre>`;
+                }
+            }
+            return resultHtml;
+        }
+
+        async function typeMessage(fullText) {
+            const div = document.createElement('div');
+            div.className = `message ai-msg p-5 rounded-2xl self-start text-slate-200 shadow-sm`;
+            div.innerHTML = `<p class="text-blue-400 font-bold text-[10px] mb-2 uppercase tracking-widest">Интеллект</p><div class="content prose prose-invert max-w-none"></div>`;
+            chatBox.appendChild(div);
+            const contentDiv = div.querySelector('.content');
+
+            const isLong = fullText.length > LONG_TEXT_THRESHOLD;
+
+            if (isLong) {
+                contentDiv.innerHTML = parseMarkdown(fullText);
+                if (fullText.length <= MAX_HIGHLIGHT_CHARS) {
+                    Prism.highlightAllUnder(contentDiv);
+                }
+                chatBox.scrollTop = chatBox.scrollHeight;
+                return;
+            }
+
+            let currentText = "";
+            const step = 4;
+
+            for (let i = 0; i < fullText.length; i += step) {
+                currentText = fullText.substring(0, i + step);
+                contentDiv.innerHTML = parseMarkdown(currentText) + '<span class="cursor"></span>';
+                Prism.highlightAllUnder(contentDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                await new Promise(r => setTimeout(r, 15));
+            }
+
+            contentDiv.innerHTML = parseMarkdown(fullText);
+            Prism.highlightAllUnder(contentDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        chatForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            const userDiv = document.createElement('div');
+            userDiv.className = `message user-msg p-4 rounded-2xl self-end text-white ml-auto shadow-lg`;
+            userDiv.innerHTML = `<p class="font-bold text-[10px] mb-1 opacity-70 uppercase tracking-widest">Создатель</p><div>${escapeHtml(text).replace(/
+/g, '<br>')}</div>`;
+            chatBox.appendChild(userDiv);
+
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            chatBox.scrollTop = chatBox.scrollHeight;
+            loading.classList.remove('hidden');
+
+            const response = await ai.generateResponse(text);
+            loading.classList.add('hidden');
+            await typeMessage(response);
+        };
+
+        userInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        document.getElementById('clearChat').onclick = () => {
+            ai.history = [];
+            document.getElementById('memoryStatus').innerText = 'Контекст: 0 сообщений';
+            chatBox.innerHTML = '';
+            const sysMsg = document.createElement('div');
+            sysMsg.className = "text-center text-[10px] text-slate-500 uppercase tracking-widest py-4";
+            sysMsg.innerText = "История диалога очищена";
+            chatBox.appendChild(sysMsg);
+        };
+    </script>
+</body>
+</html>
