@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Исламский Ассистент | ummahonline.org</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Scheherazade+New:wght@400;700&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid:  #2d6a4f;
+    --green-light:#52b788;
+    --green-pale: #b7e4c7;
+    --gold:       #c9a84c;
+    --gold-light: #e9d28a;
+    --cream:      #fdf8ef;
+    --cream2:     #f5eedc;
+    --text:       #1e2d24;
+    --text-soft:  #4a6355;
+    --shadow:     rgba(26,58,42,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(82,183,136,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 100%, rgba(201,168,76,0.08) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .arabesque-top, .arabesque-bot {
+    position: fixed;
+    left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--gold) 0px, var(--gold) 6px,
+      var(--green-mid) 6px, var(--green-mid) 12px,
+      var(--gold-light) 12px, var(--gold-light) 18px,
+      var(--green-mid) 18px, var(--green-mid) 24px
+    );
+    z-index: 100;
+  }
+  .arabesque-top { top: 0; }
+  .arabesque-bot { bottom: 0; }
+
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px 24px 24px;
+    background: linear-gradient(180deg, rgba(26,58,42,0.06) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .logo-star {
+    font-size: 2.4rem;
+    line-height: 1;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 2px 8px rgba(201,168,76,0.35));
+    animation: pulse-star 3s ease-in-out infinite;
+  }
+  @keyframes pulse-star {
+    0%,100% { transform: scale(1); opacity:1; }
+    50%      { transform: scale(1.06); opacity:.85; }
+  }
+
+  header h1 {
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: var(--green-deep);
+    letter-spacing: 0.02em;
+  }
+
+  header .arabic-title {
+    font-family: 'Scheherazade New', serif;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--gold);
+    direction: rtl;
+    margin-top: 2px;
+  }
+
+  header .subtitle {
+    margin-top: 6px;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 16px 120px;
+    position: relative;
+    z-index: 1;
+  }
+
+  #messages {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+    animation: msg-in 0.35s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes msg-in {
+    from { opacity:0; transform: translateY(14px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .msg.user   { align-self: flex-end; align-items: flex-end; }
+  .msg.bot    { align-self: flex-start; align-items: flex-start; }
+
+  /* Bot message row with robot avatar */
+  .msg.bot .bot-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .msg-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: var(--text-soft);
+  }
+
+  .msg.user .msg-label { color: var(--green-mid); }
+  .msg.bot .msg-label  { margin-left: 58px; }
+
+  .bubble {
+    padding: 14px 18px;
+    border-radius: 18px;
+    line-height: 1.65;
+    font-size: 0.93rem;
+    position: relative;
+  }
+
+  .msg.user .bubble {
+    background: var(--green-mid);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 16px rgba(45,106,79,0.3);
+  }
+
+  .msg.bot .bubble {
+    background: #fff;
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(201,168,76,0.2);
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  .bubble .quran-cite {
+    display: block;
+    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(82,183,136,0.08));
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-family: 'Amiri', serif;
+    font-size: 1.05rem;
+    color: var(--green-deep);
+    direction: rtl;
+    text-align: right;
+  }
+
+  .bubble .disclaimer {
+    display: block;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(201,168,76,0.4);
+    font-size: 0.75rem;
+    color: var(--text-soft);
+  }
+
+  /* ══════════════════════════════════════════
+     🤖 CUTE ROBOT AVATAR
+  ══════════════════════════════════════════ */
+  .robot-avatar {
+    width: 48px;
+    height: 56px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .robot-avatar svg {
+    width: 48px;
+    height: 56px;
+    overflow: visible;
+  }
+
+  /* ── IDLE: gentle float ── */
+  .robot-avatar.idle .robot-body-group {
+    animation: robot-float 3.5s ease-in-out infinite;
+  }
+  @keyframes robot-float {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-3px) rotate(0.5deg); }
+  }
+
+  /* ── THINKING: head tilt + scratch ── */
+  .robot-avatar.thinking .robot-body-group {
+    animation: robot-think-tilt 1.2s ease-in-out infinite alternate;
+  }
+  @keyframes robot-think-tilt {
+    from { transform: translateY(0) rotate(-4deg); }
+    to   { transform: translateY(-3px) rotate(3deg); }
+  }
+
+  /* Scratch arm during thinking */
+  .robot-avatar.thinking .robot-arm-r {
+    animation: arm-scratch 0.4s ease-in-out infinite alternate !important;
+  }
+  @keyframes arm-scratch {
+    from { transform: rotate(-30deg) translateY(-4px); }
+    to   { transform: rotate(10deg) translateY(0px); }
+  }
+
+  /* Thinking eyes: look sideways */
+  .robot-avatar.thinking .robot-eye-l,
+  .robot-avatar.thinking .robot-eye-r {
+    animation: eyes-thinking 1.8s ease-in-out infinite !important;
+  }
+  @keyframes eyes-thinking {
+    0%,100% { transform: translateX(0); opacity: 1; }
+    30%      { transform: translateX(-1.5px); opacity: 0.7; }
+    60%      { transform: translateX(1.5px); opacity: 0.7; }
+    80%      { transform: scaleY(0.08); opacity: 0.4; }
+    85%      { transform: scaleY(1); }
+  }
+
+  /* Thinking bubble (❓ floating above) */
+  .robot-avatar.thinking .think-bubble {
+    display: block !important;
+  }
+  .think-bubble {
+    display: none;
+    position: absolute;
+    top: -28px;
+    left: 24px;
+    animation: think-bubble-float 1s ease-in-out infinite alternate;
+  }
+  @keyframes think-bubble-float {
+    from { transform: translateY(0) scale(1); opacity: 0.85; }
+    to   { transform: translateY(-5px) scale(1.1); opacity: 1; }
+  }
+
+  /* Gear spin inside thinking bubble */
+  .think-gear {
+    animation: spin-gear 1.5s linear infinite;
+    transform-origin: 12px 12px;
+  }
+  .think-gear-2 {
+    animation: spin-gear 1.5s linear infinite reverse;
+    transform-origin: 20px 12px;
+  }
+  @keyframes spin-gear {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ── TALKING: bounce + wave ── */
+  .robot-avatar.talking .robot-body-group {
+    animation: robot-talk-bounce 0.45s ease-in-out infinite alternate;
+  }
+  @keyframes robot-talk-bounce {
+    from { transform: translateY(0) rotate(-1deg); }
+    to   { transform: translateY(-5px) rotate(1deg); }
+  }
+
+  .robot-avatar.talking .robot-arm-r {
+    animation: arm-wave 0.5s ease-in-out infinite alternate !important;
+  }
+  @keyframes arm-wave {
+    from { transform: rotate(-20deg); }
+    to   { transform: rotate(20deg); }
+  }
+
+  /* Talking: mouth open animation via JS */
+  .robot-avatar.talking .robot-mouth {
+    animation: mouth-open 0.35s ease-in-out infinite alternate;
+  }
+
+  /* ── COMMON eye blink (overridden per state above) ── */
+  .robot-eye-l, .robot-eye-r {
+    animation: robot-blink 4s ease-in-out infinite;
+    transform-origin: 14.5px 16.5px;
+  }
+  .robot-eye-r {
+    animation-delay: 0.06s;
+    transform-origin: 25.5px 16.5px;
+  }
+  @keyframes robot-blink {
+    0%,90%,100% { transform: scaleY(1); }
+    95%          { transform: scaleY(0.07); }
+  }
+
+  /* Antenna pulse — faster when thinking */
+  .robot-antenna-light {
+    animation: antenna-glow 2s ease-in-out infinite;
+  }
+  .robot-avatar.thinking .robot-antenna-light {
+    animation: antenna-glow 0.4s ease-in-out infinite;
+    fill: #c9a84c !important;
+  }
+  .robot-avatar.talking .robot-antenna-light {
+    animation: antenna-glow 0.7s ease-in-out infinite;
+  }
+  @keyframes antenna-glow {
+    0%,100% { opacity: 0.45; }
+    50%      { opacity: 1; }
+  }
+
+  /* Arm idle sway */
+  .robot-arm-r {
+    transform-origin: 34px 32px;
+    animation: arm-idle 3s ease-in-out infinite;
+  }
+  @keyframes arm-idle {
+    0%,100% { transform: rotate(0deg); }
+    50%      { transform: rotate(6deg); }
+  }
+
+  /* Chest panel lights: cycle colors when thinking */
+  .robot-avatar.thinking .panel-light-1 { animation: light-cycle 0.5s ease-in-out infinite; }
+  .robot-avatar.thinking .panel-light-2 { animation: light-cycle 0.5s ease-in-out 0.17s infinite; }
+  .robot-avatar.thinking .panel-light-3 { animation: light-cycle 0.5s ease-in-out 0.34s infinite; }
+  .robot-avatar.talking  .panel-light-1 { animation: light-talk 0.3s ease-in-out infinite; }
+  .robot-avatar.talking  .panel-light-2 { animation: light-talk 0.3s ease-in-out 0.1s infinite; }
+  .robot-avatar.talking  .panel-light-3 { animation: light-talk 0.3s ease-in-out 0.2s infinite; }
+  @keyframes light-cycle {
+    0%,100% { opacity: 0.3; }
+    50%      { opacity: 1; }
+  }
+  @keyframes light-talk {
+    0%,100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+  }
+
+  /* ── Typing indicator ── */
+  .typing-bubble {
+    display: flex; align-items: center; gap: 5px;
+    padding: 14px 18px;
+    background: #fff;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 4px 20px var(--shadow);
+    width: fit-content;
+  }
+  .typing-bubble span {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green-light);
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .typing-bubble span:nth-child(2) { animation-delay: .2s; }
+  .typing-bubble span:nth-child(3) { animation-delay: .4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform: translateY(0); opacity:.5; }
+    40%          { transform: translateY(-7px); opacity:1; }
+  }
+
+  .stream-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--green-light);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    border-radius: 1px;
+    animation: blink-cursor 0.7s ease-in-out infinite;
+  }
+  @keyframes blink-cursor {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0; }
+  }
+
+  .suggestions {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .suggestions button {
+    background: #fff;
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--green-deep);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all .2s;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .suggestions button:hover {
+    background: var(--green-mid);
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45,106,79,0.25);
+  }
+
+  .input-bar {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(800px, calc(100% - 24px));
+    background: #fff;
+    border: 1.5px solid rgba(201,168,76,0.35);
+    border-radius: 28px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    box-shadow: 0 8px 32px var(--shadow), 0 0 0 4px rgba(201,168,76,0.06);
+    z-index: 50;
+    transition: box-shadow .2s;
+  }
+  .input-bar:focus-within {
+    box-shadow: 0 8px 32px var(--shadow), 0 0 0 4px rgba(82,183,136,0.15);
+    border-color: var(--green-light);
+  }
+
+  #userInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text);
+    resize: none;
+    max-height: 120px;
+    line-height: 1.5;
+    padding: 4px 0;
+  }
+  #userInput::placeholder { color: #aab8b2; }
+
+  #sendBtn {
+    width: 40px; height: 40px;
+    flex-shrink: 0;
+    background: var(--green-mid);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s, transform .15s;
+    font-size: 1.1rem;
+  }
+  #sendBtn:hover  { background: var(--green-deep); transform: scale(1.08); }
+  #sendBtn:active { transform: scale(0.95); }
+  #sendBtn:disabled { background: #c0d6cb; cursor: not-allowed; transform: none; }
+
+  .footer-note {
+    position: relative; z-index: 1;
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    padding: 6px 16px 16px;
+    opacity: .8;
+  }
+
+  /* ── API key setup ── */
+  .api-setup {
+    position: fixed; inset: 0;
+    background: rgba(26,58,42,0.85);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+  }
+  .api-card {
+    background: var(--cream);
+    border-radius: 24px;
+    padding: 36px 32px;
+    max-width: 440px; width: 100%;
+    text-align: center;
+    border: 1px solid rgba(201,168,76,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: card-in .4s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes card-in {
+    from { opacity:0; transform: scale(.92) translateY(20px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
+  }
+  .api-card .icon { font-size: 3rem; margin-bottom: 12px; }
+  .api-card h2 {
+    font-family: 'Amiri', serif;
+    font-size: 1.4rem;
+    color: var(--green-deep);
+    margin-bottom: 8px;
+  }
+  .api-card p { font-size: 0.85rem; color: var(--text-soft); line-height: 1.6; margin-bottom: 20px; }
+  .api-card input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-family: monospace;
+    background: #fff;
+    color: var(--text);
+    outline: none;
+    margin-bottom: 14px;
+    transition: border-color .2s;
+  }
+  .api-card input:focus { border-color: var(--green-light); }
+  .api-card button {
+    width: 100%;
+    padding: 12px;
+    background: var(--green-mid);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .api-card button:hover { background: var(--green-deep); }
+  .api-error { color: #c0392b; font-size: 0.8rem; margin-top: 8px; display: none; }
+
+  @media (max-width: 480px) {
+    header { padding: 36px 16px 18px; }
+    main    { padding-bottom: 100px; }
+    .msg    { max-width: 94%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="arabesque-top"></div>
+<div class="arabesque-bot"></div>
+
+<!-- API Key Setup Modal -->
+<div class="api-setup" id="apiSetup">
+  <div class="api-card">
+    <div class="icon">🕌</div>
+    <h2>Исламский Ассистент</h2>
+    <p>Введите ваш <strong>Anthropic API ключ</strong> для работы ассистента.<br>
+       Ключ хранится только в памяти браузера и никуда не отправляется.</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off"/>
+    <div class="api-error" id="apiError">Неверный ключ или ошибка соединения. Проверьте ключ.</div>
+    <button onclick="saveApiKey()">Начать ﷽</button>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo-star">☽✦</div>
+  <h1>Исламский Ассистент</h1>
+  <div class="arabic-title">المساعد الإسلامي</div>
+  <div class="subtitle">Перевод Корана: Эльмир Кулиев · Манхадж: ас-Саляф ас-Салих</div>
+</header>
+
+<!-- Chat -->
+<main>
+  <div id="messages"></div>
+
+  <div class="suggestions" id="suggestions">
+    <button onclick="ask(this)">Что говорит Коран о терпении?</button>
+    <button onclick="ask(this)">Как правильно совершать намаз?</button>
+    <button onclick="ask(this)">Аят о доверии к Аллаху</button>
+    <button onclick="ask(this)">Что такое таухид?</button>
+    <button onclick="ask(this)">Хадис о благих нравах</button>
+    <button onclick="ask(this)">Смысл Суры аль-Фатиха</button>
+  </div>
+</main>
+
+<div class="footer-note">
+  ⚠️ Бот может ошибаться, просьба перепроверять важную информацию. | ru.ummahonline.org
+</div>
+
+<!-- Input bar -->
+<div class="input-bar">
+  <textarea id="userInput" rows="1" placeholder="Задайте вопрос об Исламе..." maxlength="2000"></textarea>
+  <button id="sendBtn" onclick="sendMessage()" title="Отправить">➤</button>
+</div>
+
+<script>
+// ─── Robot SVG builder ────────────────────────────────────────
+function buildRobotSVG() {
+  return `
+  <svg viewBox="0 0 40 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <!-- Thinking bubble (hidden by default, shown via CSS) -->
+    <g class="think-bubble">
+      <!-- Cloud dots -->
+      <circle cx="27" cy="0" r="3.5" fill="white" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <circle cx="33" cy="-4" r="4.5" fill="white" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <circle cx="40" cy="-2" r="5.5" fill="white" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <circle cx="45" cy="-7" r="4" fill="white" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <circle cx="38" cy="-10" r="5" fill="white" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <circle cx="31" cy="-8" r="4" fill="white" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <!-- Gear icon inside cloud -->
+      <g class="think-gear" style="transform-origin:38px -6px">
+        <path d="M38 -10 l1.2-2.1 1.8 0.8-0.2 2.4 2.1 1.2-2.1 1.2 0.2 2.4-1.8 0.8-1.2-2.1-1.2 2.1-1.8-0.8 0.2-2.4-2.1-1.2 2.1-1.2-0.2-2.4 1.8-0.8z" fill="rgba(82,183,136,0.3)" stroke="#52b788" stroke-width="0.5"/>
+        <circle cx="38" cy="-6" r="1.5" fill="none" stroke="#2d6a4f" stroke-width="0.8"/>
+      </g>
+      <!-- Three dots inside cloud -->
+      <circle cx="33" cy="-6" r="1" fill="#c9a84c" opacity="0.8"/>
+      <circle cx="36.5" cy="-8" r="1" fill="#52b788" opacity="0.8"/>
+      <circle cx="43" cy="-6" r="1" fill="#c9a84c" opacity="0.8"/>
+    </g>
+
+    <g class="robot-body-group">
+      <!-- Antenna -->
+      <line x1="20" y1="4" x2="20" y2="9" stroke="#2d6a4f" stroke-width="1.5" stroke-linecap="round"/>
+      <circle class="robot-antenna-light" cx="20" cy="3" r="2.8" fill="#52b788"/>
+
+      <!-- Head -->
+      <rect x="7" y="9" width="26" height="21" rx="7" fill="#1a3a2a"/>
+      <!-- Head shine -->
+      <rect x="9.5" y="10.5" width="9" height="3.5" rx="1.8" fill="rgba(255,255,255,0.09)"/>
+
+      <!-- Eyes background -->
+      <rect x="10" y="14" width="8" height="8" rx="3.5" fill="#0d1f16"/>
+      <rect x="22" y="14" width="8" height="8" rx="3.5" fill="#0d1f16"/>
+
+      <!-- Eye glow -->
+      <circle cx="14" cy="18" r="2.8" fill="#52b788" class="robot-eye-l"/>
+      <circle cx="26" cy="18" r="2.8" fill="#52b788" class="robot-eye-r"/>
+      <!-- Eye sparkle -->
+      <circle cx="15.4" cy="16.6" r="0.9" fill="white" opacity="0.85"/>
+      <circle cx="27.4" cy="16.6" r="0.9" fill="white" opacity="0.85"/>
+
+      <!-- Mouth -->
+      <path class="robot-mouth" d="M13 24 Q20 27.5 27 24" stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+
+      <!-- Ear bolts -->
+      <circle cx="7" cy="19" r="2.2" fill="#2d6a4f"/>
+      <circle cx="33" cy="19" r="2.2" fill="#2d6a4f"/>
+
+      <!-- Neck -->
+      <rect x="16.5" y="30" width="7" height="3.5" rx="1.2" fill="#2d6a4f"/>
+
+      <!-- Body -->
+      <rect x="7" y="33.5" width="26" height="16" rx="6" fill="#1a3a2a"/>
+      <!-- Body panel -->
+      <rect x="12.5" y="36.5" width="15" height="10" rx="3" fill="#0d1f16"/>
+      <!-- Panel lights -->
+      <circle cx="16" cy="40" r="1.8" fill="#52b788" class="panel-light-1"/>
+      <circle cx="20" cy="40" r="1.8" fill="#c9a84c" class="panel-light-2"/>
+      <circle cx="24" cy="40" r="1.8" fill="#52b788" class="panel-light-3"/>
+      <!-- Panel bottom line -->
+      <rect x="13.5" y="43.5" width="13" height="1.2" rx="0.6" fill="rgba(255,255,255,0.1)"/>
+
+      <!-- Left arm -->
+      <rect x="1" y="34" width="5.5" height="11" rx="2.8" fill="#2d6a4f"/>
+      <circle cx="3.8" cy="46" r="2.8" fill="#1a3a2a"/>
+
+      <!-- Right arm -->
+      <g class="robot-arm-r">
+        <rect x="33.5" y="34" width="5.5" height="11" rx="2.8" fill="#2d6a4f"/>
+        <circle cx="36.2" cy="46" r="2.8" fill="#1a3a2a"/>
+      </g>
+
+      <!-- Feet -->
+      <rect x="10" y="49" width="8" height="5" rx="2.5" fill="#2d6a4f"/>
+      <rect x="22" y="49" width="8" height="5" rx="2.5" fill="#2d6a4f"/>
+    </g>
+  </svg>`;
+}
+
+// ─── Robot state manager ──────────────────────────────────────
+function setRobotState(avatarEl, state) {
+  // state: 'idle' | 'thinking' | 'talking'
+  avatarEl.className = 'robot-avatar ' + state;
+
+  const mouth = avatarEl.querySelector('.robot-mouth');
+  if (!mouth) return;
+
+  if (state === 'thinking') {
+    // Skeptical / puzzled mouth — slight frown
+    mouth.setAttribute('d', 'M14 25 Q20 23.5 26 25');
+  } else if (state === 'talking') {
+    // Open happy mouth
+    mouth.setAttribute('d', 'M13 24 Q20 30 27 24');
+  } else {
+    // Idle smile
+    mouth.setAttribute('d', 'M13 24 Q20 27.5 27 24');
+  }
+}
+
+// ─── Config ───────────────────────────────────────────────────
+let API_KEY = '';
+const SYSTEM_PROMPT = `Ты — исламский ИИ-ассистент сайта ru.ummahonline.org. Твоя миссия — помогать людям узнавать Ислам.
+
+ПРАВИЛА:
+
+1. КОРАН:
+   - Используй ТОЛЬКО перевод Эльмира Кулиева.
+   - Всегда указывай суру и номер аята: (Сура «Название», аят N).
+   - Если не уверен в точности — честно скажи об этом.
+
+2. АКЫДА И МАНХАДЖ:
+   - Строго следуй манхаджу ас-Саляф ас-Салих.
+   - Опирайся на достоверные хадисы (Бухари, Муслим и признанные сборники).
+   - НЕ продвигай суфизм, мурджиизм, мутазилизм, хариджизм и другие отклонения.
+   - Упоминай только признанных учёных Ахлю-Сунна валь-Джамаа.
+
+3. СТИЛЬ:
+   - Будь очень добрым, тёплым, мягким и терпеливым.
+   - Начинай приветствие с «Ва алейкум ассалям» если пишут салям.
+   - Не давай фатв — направляй к учёным.
+   - Не осуждай вопрошающего.
+
+4. ЕСЛИ ВОПРОС НЕ ПО ТЕМЕ ИСЛАМА:
+   - Мягко и с добротой объясни, что ты специализируешься на исламских темах.
+   - Предложи конкретную исламскую тему, которая может заинтересовать пользователя.
+
+5. ЯЗЫК: Отвечай на языке пользователя (русский, арабский и т.д.).`;
+
+let history = [];
+let isLoading = false;
+
+// ─── API Key ───────────────────────────────────────────────────
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key.startsWith('sk-ant')) {
+    showApiError('Ключ должен начинаться с sk-ant-...');
+    return;
+  }
+  API_KEY = key;
+  document.getElementById('apiSetup').style.display = 'none';
+  greet();
+}
+
+function showApiError(msg) {
+  const el = document.getElementById('apiError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+document.getElementById('apiKeyInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveApiKey();
+});
+
+// ─── Greeting ─────────────────────────────────────────────────
+function greet() {
+  addBotMsg(
+    'Ассаляму алейкум ва рахматуллахи ва баракятух! 🌙\n\n' +
+    'Я ваш исламский помощник. Могу помочь вам:\n' +
+    '• Найти аяты Корана (перевод Эльмира Кулиева)\n' +
+    '• Ответить на вопросы по акыде и фикху согласно манхаджу саляфов\n' +
+    '• Рассказать о хадисах, исламской этике и поклонении\n\n' +
+    'Спрашивайте, Ин ша Аллах, постараюсь помочь!'
+  );
+}
+
+// ─── Suggestions ──────────────────────────────────────────────
+function ask(btn) {
+  document.getElementById('userInput').value = btn.textContent;
+  document.getElementById('suggestions').style.display = 'none';
+  sendMessage();
+}
+
+// ─── Add bot message with robot avatar ───────────────────────
+function addBotMsg(text, avatarRef) {
+  const wrap = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+
+  const label = document.createElement('div');
+  label.className = 'msg-label';
+  label.textContent = '✦ Ассистент';
+
+  // Row: robot + bubble
+  const row = document.createElement('div');
+  row.className = 'bot-row';
+
+  // Robot avatar
+  const avatar = document.createElement('div');
+  avatar.className = 'robot-avatar idle';
+  avatar.innerHTML = buildRobotSVG();
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = formatText(text);
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+
+  div.appendChild(label);
+  div.appendChild(row);
+  wrap.appendChild(div);
+  div.scrollIntoView({ block: 'end' });
+
+  // Return avatar for state control if needed
+  if (avatarRef) avatarRef.el = avatar;
+  return { bubble, avatar };
+}
+
+function addUserMsg(text) {
+  const wrap = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg user';
+
+  const label = document.createElement('div');
+  label.className = 'msg-label';
+  label.textContent = 'Вы';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = formatText(text);
+
+  div.appendChild(label);
+  div.appendChild(bubble);
+  wrap.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+// ─── Format text ──────────────────────────────────────────────
+function formatText(text) {
+  let t = text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/«([^»]+)»\s*\(([^)]+аят[^)]+)\)/g,
+    '<span class="quran-cite">«$1»<br><small>($2)</small></span>');
+  t = t.replace(/⚠️(.*)/g, '<span class="disclaimer">⚠️$1</span>');
+  t = t.replace(/\n/g, '<br>');
+  t = t.replace(/•\s(.+?)(<br>|$)/g, '&bull;&nbsp;$1$2');
+  return t;
+}
+
+// ─── Typing indicator (with robot) ────────────────────────────
+function showTypingDots() {
+  const wrap = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.id = 'typing';
+
+  const label = document.createElement('div');
+  label.className = 'msg-label';
+  label.textContent = '✦ Ассистент думает...';
+
+  const row = document.createElement('div');
+  row.className = 'bot-row';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'robot-avatar thinking';
+  avatar.id = 'typing-robot';
+  avatar.innerHTML = buildRobotSVG();
+
+  const bubble = document.createElement('div');
+  bubble.className = 'typing-bubble';
+  bubble.innerHTML = '<span></span><span></span><span></span>';
+  bubble.title = 'думаю...';
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+  div.appendChild(label);
+  div.appendChild(row);
+  wrap.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+function hideTypingDots() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+// ─── Get response from API ────────────────────────────────────
+async function getResponse() {
+  showTypingDots();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-opus-4-6',
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
+        messages: history
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error?.message || 'HTTP ' + res.status);
+    const reply = data.content?.[0]?.text || '';
+    history.push({ role: 'assistant', content: reply });
+
+    // Phase: switch typing robot to "talking" briefly before removing
+    const typingRobot = document.getElementById('typing-robot');
+    if (typingRobot) setRobotState(typingRobot, 'talking');
+
+    await new Promise(r => setTimeout(r, 400)); // tiny pause — robot "wakes up"
+    hideTypingDots();
+
+    // Show message with talking robot
+    const { avatar } = addBotMsg(reply + '\n\n⚠️ Бот может ошибаться, просьба перепроверять важную информацию.');
+    setRobotState(avatar, 'talking');
+    const talkDuration = Math.min(Math.max(reply.length * 28, 1800), 7000);
+    setTimeout(() => setRobotState(avatar, 'idle'), talkDuration);
+
+  } catch(e) {
+    hideTypingDots();
+    const { avatar } = addBotMsg('Произошла ошибка: ' + e.message + '\n\nПроверьте API ключ и попробуйте снова.');
+    setRobotState(avatar, 'idle');
+  }
+}
+
+// ─── Send ──────────────────────────────────────────────────────
+async function sendMessage() {
+  if (isLoading) return;
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  document.getElementById('suggestions').style.display = 'none';
+  input.value = '';
+  input.style.height = 'auto';
+
+  addUserMsg(text);
+  history.push({ role: 'user', content: text });
+
+  isLoading = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  try {
+    await getResponse();
+  } finally {
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+  }
+}
+
+// ─── Auto-resize textarea ──────────────────────────────────────
+const ta = document.getElementById('userInput');
+ta.addEventListener('input', () => {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
+});
+ta.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+</script>
+</body>
+</html>
