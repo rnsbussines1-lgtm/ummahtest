@@ -570,10 +570,11 @@
   <div class="api-card">
     <div class="icon">🕌</div>
     <h2>Исламский Ассистент</h2>
-    <p>Введите ваш <strong>Anthropic API ключ</strong> для работы ассистента.<br>
-       Ключ хранится только в памяти браузера и никуда не отправляется.</p>
-    <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off"/>
-    <div class="api-error" id="apiError">Неверный ключ или ошибка соединения. Проверьте ключ.</div>
+    <p>Введите ваш <strong>Groq API ключ</strong> — он <strong>бесплатный!</strong><br><br>
+       Получить ключ: зайдите на <strong>console.groq.com</strong> → войдите через Google → раздел <strong>API Keys</strong> → <strong>Create API Key</strong>.<br><br>
+       Ключ хранится только в памяти браузера.</p>
+    <input type="password" id="apiKeyInput" placeholder="gsk_..." autocomplete="off"/>
+    <div class="api-error" id="apiError">Groq ключ должен начинаться с gsk_...</div>
     <button onclick="saveApiKey()">Начать ﷽</button>
   </div>
 </div>
@@ -716,6 +717,7 @@ function setRobotState(avatarEl, state) {
 
 // ─── Config ───────────────────────────────────────────────────
 let API_KEY = '';
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 const SYSTEM_PROMPT = `Ты — исламский ИИ-ассистент сайта ru.ummahonline.org. Твоя миссия — помогать людям узнавать Ислам.
 
 ПРАВИЛА:
@@ -749,8 +751,8 @@ let isLoading = false;
 // ─── API Key ───────────────────────────────────────────────────
 function saveApiKey() {
   const key = document.getElementById('apiKeyInput').value.trim();
-  if (!key.startsWith('sk-ant')) {
-    showApiError('Ключ должен начинаться с sk-ant-...');
+  if (!key.startsWith('gsk_')) {
+    showApiError('Groq ключ должен начинаться с gsk_...');
     return;
   }
   API_KEY = key;
@@ -896,24 +898,24 @@ function hideTypingDots() {
 async function getResponse() {
   showTypingDots();
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'Authorization': 'Bearer ' + API_KEY
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-6',
+        model: GROQ_MODEL,
         max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages: history
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...history
+        ]
       })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data?.error?.message || 'HTTP ' + res.status);
-    const reply = data.content?.[0]?.text || '';
+    const reply = data.choices?.[0]?.message?.content || '';
     history.push({ role: 'assistant', content: reply });
 
     // Phase: switch typing robot to "talking" briefly before removing
