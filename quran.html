@@ -172,61 +172,6 @@
             letter-spacing: 0.5px;
         }
 
-        .audio-toolbar {
-            background: rgba(255,255,255,0.72);
-            backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(194,163,120,0.28);
-            border-radius: 20px;
-            padding: 22px;
-            margin-bottom: 28px;
-            box-shadow: 0 12px 30px rgba(176,141,87,0.08);
-        }
-
-        .audio-toolbar-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 1.8px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
-        .audio-main-controls {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .surah-audio-btn {
-            background: linear-gradient(135deg, var(--accent-gold), #b48c54);
-            color: var(--white);
-            border: none;
-            border-radius: 14px;
-            padding: 14px 18px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.92rem;
-            font-weight: 700;
-            box-shadow: 0 10px 24px rgba(176,141,87,0.22);
-            transition: var(--transition);
-        }
-
-        .surah-audio-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(176,141,87,0.28);
-        }
-
-        .surah-audio-btn:active {
-            transform: scale(0.98);
-        }
-
-        .audio-status {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
         .load-notice {
             display: none;
             margin: 20px 0 28px;
@@ -618,13 +563,10 @@
         }
 
         @media (max-width: 700px) {
-            .audio-main-controls,
             .surah-nav {
                 flex-direction: column;
                 align-items: stretch;
             }
-
-            .surah-audio-btn { width: 100%; }
         }
 
         @media (max-width: 600px) {
@@ -656,14 +598,6 @@
             <span id="current-ar" class="arabic-title"></span>
             <h1 id="current-ru"></h1>
             <p id="current-info" style="opacity:0.6;margin-top:8px;"></p>
-        </div>
-
-        <div class="audio-toolbar">
-            <div class="audio-toolbar-title">Аудио суры</div>
-            <div class="audio-main-controls">
-                <button id="surah-audio-btn" class="surah-audio-btn" onclick="toggleSurahPlayback()">Слушать всю суру</button>
-                <p id="audio-mode-hint" class="audio-status">Нажмите на кнопку у аята, чтобы выбрать: один аят или всю суру с этого места.</p>
-            </div>
         </div>
 
         <div id="ayahs-container"></div>
@@ -1011,69 +945,7 @@
         openAudioChoiceSheet(button, surahIdx, ayahIdx);
     }
 
-    function isWholeSurahPlaybackFromStart() {
-        const firstItem = playbackQueue[0];
-        return currentPlaybackMode === 'surah' && firstItem && firstItem.surahIndex === activeSurahIndex && firstItem.ayahIndex === 0;
-    }
-
-    function toggleSurahPlayback() {
-        if (activeSurahIndex === null) return;
-
-        if (isWholeSurahPlaybackFromStart() && currentAudio) {
-            if (currentAudio.paused) {
-                isAudioPreparing = true;
-                syncPlayButtons();
-                updateAudioUi();
-                currentAudio.play().catch(() => {
-                    isAudioPreparing = false;
-                    finishPlayback('Браузер не смог продолжить воспроизведение аудио.');
-                });
-            } else {
-                isAudioPreparing = false;
-                currentAudio.pause();
-            }
-
-            syncPlayButtons();
-            updateAudioUi();
-            return;
-        }
-
-        const queue = buildPlaybackQueue(activeSurahIndex, 0, 'surah');
-        playQueue(queue, 'surah');
-    }
-
     function updateAudioUi() {
-        const status = document.getElementById('audio-mode-hint');
-        const surahBtn = document.getElementById('surah-audio-btn');
-        const totalAyahs = activeSurahIndex !== null ? (qData[activeSurahIndex]?.aya || qData[activeSurahIndex]?.verses || []).length : 0;
-        const activeItem = getActiveQueueItem();
-
-        if (!status || !surahBtn) return;
-
-        if (isWholeSurahPlaybackFromStart() && currentAudio) {
-            surahBtn.textContent = currentAudio.paused ? 'Продолжить суру' : 'Пауза';
-        } else {
-            surahBtn.textContent = 'Слушать всю суру';
-        }
-
-        if (audioStatusMessage) {
-            status.textContent = audioStatusMessage;
-            syncPlayButtons();
-            return;
-        }
-
-        if (activeItem && currentAudio) {
-            if (currentPlaybackMode === 'surah') {
-                const state = currentAudio.paused && !isAudioPreparing ? 'Пауза' : 'Сейчас играет';
-                status.textContent = `${state}: сура целиком, аят ${activeItem.ayahNum} из ${totalAyahs}.`;
-            } else {
-                const state = currentAudio.paused && !isAudioPreparing ? 'Пауза' : 'Сейчас играет';
-                status.textContent = `${state}: аят ${activeItem.ayahNum}.`;
-            }
-        } else {
-            status.textContent = 'Нажмите на кнопку у аята, чтобы выбрать: один аят или всю суру с этого места.';
-        }
-
         syncPlayButtons();
     }
 
