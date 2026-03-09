@@ -182,49 +182,13 @@
             box-shadow: 0 12px 30px rgba(176,141,87,0.08);
         }
 
-        .audio-toolbar-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-        }
-
         .audio-toolbar-title {
             font-size: 0.82rem;
             font-weight: 700;
             letter-spacing: 1.8px;
             text-transform: uppercase;
             color: var(--text-muted);
-        }
-
-        .audio-mode-switch {
-            display: inline-flex;
-            padding: 4px;
-            border-radius: 999px;
-            background: #f4ebdf;
-            border: 1px solid rgba(194,163,120,0.3);
-            gap: 4px;
-        }
-
-        .audio-mode-btn {
-            border: none;
-            background: transparent;
-            color: var(--bg-dark);
-            padding: 10px 16px;
-            border-radius: 999px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.88rem;
-            font-weight: 700;
-            transition: var(--transition);
-        }
-
-        .audio-mode-btn.active {
-            background: var(--bg-dark);
-            color: var(--white);
-            box-shadow: 0 8px 18px rgba(61,49,41,0.18);
+            margin-bottom: 12px;
         }
 
         .audio-main-controls {
@@ -251,6 +215,10 @@
         .surah-audio-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 14px 30px rgba(176,141,87,0.28);
+        }
+
+        .surah-audio-btn:active {
+            transform: scale(0.98);
         }
 
         .audio-status {
@@ -362,6 +330,19 @@
             margin-bottom: 25px;
             border-right: 5px solid var(--accent-gold);
             box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+            scroll-margin-top: 120px;
+        }
+
+        .ayah-box.is-current {
+            background: linear-gradient(135deg, #fffdf8, #fff4e1);
+            box-shadow: 0 24px 42px rgba(176,141,87,0.22);
+            transform: translateY(-2px);
+        }
+
+        .ayah-box.is-current .ayah-num {
+            background: var(--bg-dark);
+            color: var(--white);
         }
 
         .ayah-header {
@@ -369,6 +350,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+        }
+
+        .ayah-audio-actions {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .ayah-num {
@@ -395,15 +383,105 @@
             box-shadow: 0 4px 10px rgba(176,141,87,0.3);
         }
 
+        .play-btn:active,
+        .play-btn.is-pressed {
+            transform: scale(0.9);
+            box-shadow: 0 2px 8px rgba(176,141,87,0.28);
+        }
+
         .play-btn:hover {
             background: var(--bg-dark);
             transform: scale(1.1);
+        }
+
+        .play-btn.is-active {
+            background: var(--bg-dark);
+            box-shadow: 0 10px 22px rgba(61,49,41,0.28);
         }
 
         .play-btn svg {
             width: 18px;
             height: 18px;
             fill: currentColor;
+        }
+
+        .audio-choice-sheet {
+            position: fixed;
+            inset: 0;
+            background: rgba(35, 26, 21, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+        }
+
+        .audio-choice-sheet.visible {
+            display: flex;
+        }
+
+        .audio-choice-panel {
+            width: min(520px, 100%);
+            background: rgba(255,255,255,0.96);
+            border: 1px solid rgba(194,163,120,0.25);
+            border-radius: 26px;
+            padding: 24px;
+            box-shadow: 0 30px 60px rgba(61,49,41,0.22);
+            animation: sheetRise 0.22s ease forwards;
+        }
+
+        .audio-choice-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .audio-choice-title {
+            margin: 0 0 18px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--bg-dark);
+        }
+
+        .audio-choice-actions {
+            display: grid;
+            gap: 10px;
+        }
+
+        .audio-choice-btn {
+            border: 1.5px solid rgba(194,163,120,0.34);
+            background: #fffaf2;
+            color: var(--bg-dark);
+            border-radius: 16px;
+            padding: 15px 18px;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .audio-choice-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 14px 28px rgba(176,141,87,0.16);
+        }
+
+        .audio-choice-btn.primary {
+            background: linear-gradient(135deg, var(--bg-dark), #4a3429);
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        .audio-choice-btn.cancel {
+            background: transparent;
+            color: var(--text-muted);
+            text-align: center;
         }
 
         .ayah-text-ar {
@@ -527,6 +605,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes sheetRise {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         footer {
             text-align: center;
             padding: 60px 0;
@@ -535,16 +618,10 @@
         }
 
         @media (max-width: 700px) {
-            .audio-toolbar-head,
             .audio-main-controls,
             .surah-nav {
                 flex-direction: column;
                 align-items: stretch;
-            }
-
-            .audio-mode-switch {
-                width: 100%;
-                justify-content: center;
             }
 
             .surah-audio-btn { width: 100%; }
@@ -582,20 +659,22 @@
         </div>
 
         <div class="audio-toolbar">
-            <div class="audio-toolbar-head">
-                <div class="audio-toolbar-title">Аудио суры</div>
-                <div class="audio-mode-switch">
-                    <button id="mode-ayah" class="audio-mode-btn active" onclick="setPlaybackMode('ayah')">Один аят</button>
-                    <button id="mode-surah" class="audio-mode-btn" onclick="setPlaybackMode('surah')">Вся сура</button>
-                </div>
-            </div>
+            <div class="audio-toolbar-title">Аудио суры</div>
             <div class="audio-main-controls">
                 <button id="surah-audio-btn" class="surah-audio-btn" onclick="toggleSurahPlayback()">Слушать всю суру</button>
-                <p id="audio-mode-hint" class="audio-status">Режим: один аят. Кнопка у аята воспроизводит только выбранный аят.</p>
+                <p id="audio-mode-hint" class="audio-status">Нажмите на кнопку у аята, чтобы выбрать: один аят или всю суру с этого места.</p>
             </div>
         </div>
 
         <div id="ayahs-container"></div>
+    </div>
+
+    <div id="audio-choice-sheet" class="audio-choice-sheet" onclick="closeAudioChoiceSheet(event)">
+        <div class="audio-choice-panel" onclick="event.stopPropagation()">
+            <div class="audio-choice-label">Режим прослушивания</div>
+            <h2 id="audio-choice-title" class="audio-choice-title">Выберите режим</h2>
+            <div id="audio-choice-actions" class="audio-choice-actions"></div>
+        </div>
     </div>
 
     <footer>&copy; 2026 Ummah Online.</footer>
@@ -610,12 +689,13 @@
     let tafsirData = {};
     let isReading = false;
     let currentAudio = null;
-    let playbackMode = 'ayah';
     let activeSurahIndex = null;
     let playbackQueue = [];
     let currentQueueIndex = -1;
     let currentPlaybackMode = null;
     let audioStatusMessage = '';
+    let isAudioPreparing = false;
+    let audioChoiceContext = null;
 
     async function loadAll() {
         try {
@@ -713,16 +793,53 @@
         return document.querySelector(`.play-btn[data-surah-index="${surahIdx}"][data-ayah-index="${ayahIdx}"]`);
     }
 
-    function syncPlayButtons() {
-        document.querySelectorAll('.play-btn').forEach((button) => {
-            button.innerHTML = playIcon();
+    function getAyahCard(surahIdx, ayahIdx) {
+        return document.querySelector(`.ayah-box[data-surah-index="${surahIdx}"][data-ayah-index="${ayahIdx}"]`);
+    }
+
+    function flashPress(button) {
+        if (!button) return;
+        button.classList.add('is-pressed');
+        window.setTimeout(() => button.classList.remove('is-pressed'), 140);
+    }
+
+    function highlightCurrentAyah(options = {}) {
+        const { scroll = false } = options;
+        document.querySelectorAll('.ayah-box.is-current').forEach((card) => {
+            card.classList.remove('is-current');
         });
 
         const activeItem = getActiveQueueItem();
-        if (!activeItem || !currentAudio || currentAudio.paused) return;
+        if (!activeItem) return;
+
+        const card = getAyahCard(activeItem.surahIndex, activeItem.ayahIndex);
+        if (!card) return;
+
+        card.classList.add('is-current');
+
+        if (scroll) {
+            card.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+    }
+
+    function syncPlayButtons() {
+        document.querySelectorAll('.play-btn').forEach((button) => {
+            button.innerHTML = playIcon();
+            button.classList.remove('is-active');
+        });
+
+        const activeItem = getActiveQueueItem();
+        if (!activeItem) return;
 
         const activeButton = getAyahButton(activeItem.surahIndex, activeItem.ayahIndex);
-        if (activeButton) activeButton.innerHTML = pauseIcon();
+        const shouldLookActive = isAudioPreparing || (currentAudio && !currentAudio.paused);
+        if (!activeButton || !shouldLookActive) return;
+
+        activeButton.innerHTML = pauseIcon();
+        activeButton.classList.add('is-active');
     }
 
     function stopPlayback(options = {}) {
@@ -738,12 +855,14 @@
         playbackQueue = [];
         currentQueueIndex = -1;
         currentPlaybackMode = null;
+        isAudioPreparing = false;
 
         if (!preserveStatus) {
             audioStatusMessage = '';
         }
 
         syncPlayButtons();
+        highlightCurrentAyah();
         updateAudioUi();
     }
 
@@ -755,6 +874,7 @@
     function playQueue(queue, mode) {
         if (!queue.length) return;
         audioStatusMessage = '';
+        isAudioPreparing = true;
 
         if (currentAudio) {
             currentAudio.pause();
@@ -765,6 +885,9 @@
         playbackQueue = queue;
         currentQueueIndex = 0;
         currentPlaybackMode = mode;
+        highlightCurrentAyah({ scroll: true });
+        syncPlayButtons();
+        updateAudioUi();
         playCurrentQueueItem();
     }
 
@@ -782,9 +905,17 @@
         currentAudio = new Audio(item.url);
         currentAudio.preload = 'auto';
 
+        currentAudio.onplaying = () => {
+            isAudioPreparing = false;
+            syncPlayButtons();
+            updateAudioUi();
+        };
+
         currentAudio.onended = () => {
             if (currentPlaybackMode === 'surah' && currentQueueIndex < playbackQueue.length - 1) {
                 currentQueueIndex += 1;
+                isAudioPreparing = true;
+                highlightCurrentAyah({ scroll: true });
                 playCurrentQueueItem();
                 return;
             }
@@ -797,45 +928,87 @@
         };
 
         syncPlayButtons();
+        highlightCurrentAyah({ scroll: true });
         updateAudioUi();
 
         const playPromise = currentAudio.play();
         if (playPromise && typeof playPromise.catch === 'function') {
             playPromise.catch(() => {
+                isAudioPreparing = false;
                 finishPlayback('Браузер не смог начать воспроизведение аудио.');
             });
         }
     }
 
-    function setPlaybackMode(mode) {
-        if (playbackMode === mode) return;
+    function openAudioChoiceSheet(button, surahIdx, ayahIdx) {
+        flashPress(button);
+        audioChoiceContext = { surahIdx, ayahIdx };
 
-        playbackMode = mode;
-        audioStatusMessage = '';
-        stopPlayback();
-        updateAudioUi();
-    }
-
-    function toggleAudio(_, surahIdx, ayahIdx) {
+        const sheet = document.getElementById('audio-choice-sheet');
+        const title = document.getElementById('audio-choice-title');
+        const actions = document.getElementById('audio-choice-actions');
+        const parts = namesRu[surahIdx].split(' — ');
         const activeItem = getActiveQueueItem();
         const isSameAyah = activeItem && activeItem.surahIndex === surahIdx && activeItem.ayahIndex === ayahIdx;
 
-        if (isSameAyah && currentAudio) {
-            if (currentAudio.paused) {
-                currentAudio.play().catch(() => {
-                    finishPlayback('Браузер не смог продолжить воспроизведение аудио.');
-                });
-            } else {
-                currentAudio.pause();
-            }
+        title.textContent = `${parts[0]}, аят ${ayahIdx + 1}`;
 
+        const pauseAction = isSameAyah
+            ? `<button class="audio-choice-btn" onclick="toggleCurrentPlaybackFromSheet()">${currentAudio && !currentAudio.paused ? 'Пауза' : 'Продолжить'}</button>`
+            : '';
+
+        actions.innerHTML = `
+            ${pauseAction}
+            <button class="audio-choice-btn primary" onclick="startAyahPlayback('ayah')">Слушать один аят</button>
+            <button class="audio-choice-btn" onclick="startAyahPlayback('surah')">Слушать всю суру с этого аята</button>
+            <button class="audio-choice-btn cancel" onclick="closeAudioChoiceSheet()">Отмена</button>
+        `;
+
+        sheet.classList.add('visible');
+    }
+
+    function closeAudioChoiceSheet(event) {
+        if (event && event.target !== event.currentTarget) return;
+        document.getElementById('audio-choice-sheet').classList.remove('visible');
+        audioChoiceContext = null;
+    }
+
+    function startAyahPlayback(mode) {
+        if (!audioChoiceContext) return;
+
+        const { surahIdx, ayahIdx } = audioChoiceContext;
+        closeAudioChoiceSheet();
+        const queue = buildPlaybackQueue(surahIdx, ayahIdx, mode);
+        playQueue(queue, mode);
+    }
+
+    function toggleCurrentPlaybackFromSheet() {
+        const activeItem = getActiveQueueItem();
+        if (!activeItem || !currentAudio || !audioChoiceContext) return;
+
+        const isSameAyah = activeItem.surahIndex === audioChoiceContext.surahIdx && activeItem.ayahIndex === audioChoiceContext.ayahIdx;
+        if (!isSameAyah) return;
+
+        if (currentAudio.paused) {
+            isAudioPreparing = true;
             syncPlayButtons();
             updateAudioUi();
-            return;
+            currentAudio.play().catch(() => {
+                isAudioPreparing = false;
+                finishPlayback('Браузер не смог продолжить воспроизведение аудио.');
+            });
+        } else {
+            isAudioPreparing = false;
+            currentAudio.pause();
+            syncPlayButtons();
+            updateAudioUi();
         }
 
-        const queue = buildPlaybackQueue(surahIdx, ayahIdx, playbackMode);
-        playQueue(queue, playbackMode);
+        closeAudioChoiceSheet();
+    }
+
+    function toggleAudio(button, surahIdx, ayahIdx) {
+        openAudioChoiceSheet(button, surahIdx, ayahIdx);
     }
 
     function isWholeSurahPlaybackFromStart() {
@@ -848,10 +1021,15 @@
 
         if (isWholeSurahPlaybackFromStart() && currentAudio) {
             if (currentAudio.paused) {
+                isAudioPreparing = true;
+                syncPlayButtons();
+                updateAudioUi();
                 currentAudio.play().catch(() => {
+                    isAudioPreparing = false;
                     finishPlayback('Браузер не смог продолжить воспроизведение аудио.');
                 });
             } else {
+                isAudioPreparing = false;
                 currentAudio.pause();
             }
 
@@ -865,15 +1043,10 @@
     }
 
     function updateAudioUi() {
-        const ayahModeBtn = document.getElementById('mode-ayah');
-        const surahModeBtn = document.getElementById('mode-surah');
         const status = document.getElementById('audio-mode-hint');
         const surahBtn = document.getElementById('surah-audio-btn');
         const totalAyahs = activeSurahIndex !== null ? (qData[activeSurahIndex]?.aya || qData[activeSurahIndex]?.verses || []).length : 0;
         const activeItem = getActiveQueueItem();
-
-        ayahModeBtn.classList.toggle('active', playbackMode === 'ayah');
-        surahModeBtn.classList.toggle('active', playbackMode === 'surah');
 
         if (!status || !surahBtn) return;
 
@@ -891,16 +1064,14 @@
 
         if (activeItem && currentAudio) {
             if (currentPlaybackMode === 'surah') {
-                const state = currentAudio.paused ? 'Пауза' : 'Сейчас играет';
+                const state = currentAudio.paused && !isAudioPreparing ? 'Пауза' : 'Сейчас играет';
                 status.textContent = `${state}: сура целиком, аят ${activeItem.ayahNum} из ${totalAyahs}.`;
             } else {
-                const state = currentAudio.paused ? 'Пауза' : 'Сейчас играет';
+                const state = currentAudio.paused && !isAudioPreparing ? 'Пауза' : 'Сейчас играет';
                 status.textContent = `${state}: аят ${activeItem.ayahNum}.`;
             }
-        } else if (playbackMode === 'surah') {
-            status.textContent = 'Режим: вся сура. Кнопка у аята запускает чтение от выбранного места до конца.';
         } else {
-            status.textContent = 'Режим: один аят. Кнопка у аята воспроизводит только выбранный аят.';
+            status.textContent = 'Нажмите на кнопку у аята, чтобы выбрать: один аят или всю суру с этого места.';
         }
 
         syncPlayButtons();
@@ -952,10 +1123,14 @@
 
             const div = document.createElement('div');
             div.className = 'ayah-box';
+            div.dataset.surahIndex = index;
+            div.dataset.ayahIndex = i;
             div.innerHTML = `
                 <div class="ayah-header">
                     <span class="ayah-num">Аят ${ayahNum}</span>
-                    <button class="play-btn" data-surah-index="${index}" data-ayah-index="${i}" onclick="toggleAudio(this, ${index}, ${i})">${playIcon()}</button>
+                    <div class="ayah-audio-actions">
+                        <button class="play-btn" data-surah-index="${index}" data-ayah-index="${i}" onclick="toggleAudio(this, ${index}, ${i})">${playIcon()}</button>
+                    </div>
                 </div>
                 <span class="ayah-text-ar">${ayah.text}</span>
                 <p class="ayah-text-ru">${ayah.translation || ayah.text_russian || ''}</p>
@@ -1035,4 +1210,3 @@
 </script>
 </body>
 </html>
-
